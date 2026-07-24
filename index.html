@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Metro UI Anti-Bağımlılık Yazılımı</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;-webkit-tap-highlight-color:transparent;user-select:none}
+input,textarea{user-select:text}
+body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:#fff}
+
+/* ===== BOOT SCREEN ===== */
+.boot-screen{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;transition:opacity .6s cubic-bezier(.4,0,.2,1),visibility .6s;padding:20px;text-align:center}
+.boot-screen.fade-out{opacity:0;visibility:hidden}
+.boot-custom-emblem{width:130px;height:130px;margin-bottom:65px;transform:perspective(450px) rotateY(18deg);filter:drop-shadow(0 0 25px rgba(0,173,239,.45));animation:pulseLogo 3s infinite alternate ease-in-out}
+@keyframes pulseLogo{0%{filter:drop-shadow(0 0 15px rgba(0,173,239,.3));transform:perspective(450px) rotateY(18deg) scale(1)}100%{filter:drop-shadow(0 0 30px rgba(0,173,239,.7));transform:perspective(450px) rotateY(18deg) scale(1.04)}}
+.win8-spinner{position:relative;width:48px;height:48px}
+.win8-ring{position:absolute;inset:0;opacity:0;animation:win8Orbit 4s infinite cubic-bezier(.2,.6,.8,.4)}
+.win8-ring::after{content:'';position:absolute;left:21px;top:0;width:6px;height:6px;border-radius:50%;background:#fff}
+.win8-ring:nth-child(1){animation-delay:0s}.win8-ring:nth-child(2){animation-delay:.16s}.win8-ring:nth-child(3){animation-delay:.32s}.win8-ring:nth-child(4){animation-delay:.48s}.win8-ring:nth-child(5){animation-delay:.64s}
+@keyframes win8Orbit{0%{transform:rotate(0);opacity:0}15%{opacity:1}35%{transform:rotate(280deg);opacity:1}50%{transform:rotate(360deg);opacity:1}65%{transform:rotate(640deg);opacity:1}75%{opacity:0}100%{transform:rotate(720deg);opacity:0}}
+.boot-main-title{margin-top:45px;font-size:16px;font-weight:300;letter-spacing:4px;color:#fff;text-transform:uppercase}
+.boot-disclaimer{position:absolute;bottom:25px;font-size:11px;font-weight:300;color:#666;max-width:600px;line-height:1.4;padding:0 15px}
+
+/* ===== GLOBAL LANGUAGE TOGGLE (TOP-RIGHT) ===== */
+.lang-toggle{position:fixed;top:16px;right:16px;z-index:900;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(6px);padding:8px 14px;cursor:pointer;transition:all .18s;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.lang-toggle:hover{background:rgba(0,120,215,.75);border-color:#fff;transform:scale(1.04)}
+.lang-toggle:active{transform:scale(.95)}
+.lang-toggle .flag{font-size:20px;line-height:1}
+.lang-toggle .code{font-size:12px;font-weight:700;letter-spacing:1.5px;color:#fff}
+@media(max-width:767px){.lang-toggle{top:10px;right:10px;padding:6px 10px}.lang-toggle .code{display:none}}
+
+/* ===== OOBE ===== */
+.oobe-screen{background:#121212;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:30px;animation:fadeIn .6s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.oobe-box{max-width:680px;width:100%;margin:auto 0}
+.oobe-title{font-size:38px;font-weight:200;margin-bottom:6px;letter-spacing:-.5px}
+.oobe-desc{font-size:15px;font-weight:300;color:#aaa;margin-bottom:28px}
+.form-group{margin-bottom:20px}
+.oobe-label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#00ADEF;margin-bottom:8px}
+.oobe-input{width:100%;padding:13px 16px;font-size:17px;font-weight:300;background:#202020;border:2px solid #3d3d3d;color:#fff;outline:none;transition:all .2s}
+.oobe-input:focus{border-color:#00ADEF;background:#282828}
+.oobe-input.error{border-color:#e81123;background:rgba(232,17,35,.15)}
+.error-text{color:#ff4754;font-size:13px;margin-top:6px;display:none;font-weight:400;line-height:1.4}
+.addiction-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px;margin-bottom:12px}
+.addict-card{background:#252525;border:2px solid #383838;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all .15s;min-height:85px}
+.addict-card:hover{background:#2e2e2e;border-color:#555}
+.addict-card.selected{background:#0078D7;border-color:#fff;box-shadow:0 4px 15px rgba(0,120,215,.4);transform:scale(1.02)}
+.addict-ic{font-size:26px;margin-bottom:6px}
+.addict-name{font-size:13px;font-weight:600;line-height:1.2}
+.oobe-btn{background:#00ADEF;color:#fff;border:none;padding:15px 45px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:1.5px;margin-top:5px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.oobe-btn:hover{background:#26bfff}.oobe-btn:active{transform:scale(.97);background:#008cc2}
+.setup-legal-notice{font-size:11px;color:#666;text-align:center;max-width:580px;margin-top:25px;line-height:1.5;padding-bottom:10px}
+
+/* ===== START SCREEN (CROSS-PLATFORM RESILIENT GRID) ===== */
+.start-screen{background:linear-gradient(135deg,#0b1d30 0%,#173b5e 50%,#0c4a75 100%);min-height:100vh;min-height:100dvh;padding:25px 40px;position:relative;overflow-y:auto;overflow-x:hidden;width:100%}
+.start-screen.animate-in .tile{opacity:0;animation:metroTileSlideIn .45s cubic-bezier(.1,.9,.2,1) forwards}
+@keyframes metroTileSlideIn{0%{opacity:0;transform:perspective(500px) rotateY(-20deg) translateZ(-50px) translateX(60px)}100%{opacity:1;transform:perspective(500px) rotateY(0) translateZ(0) translateX(0)}}
+.start-screen.animate-in .tile:nth-child(1){animation-delay:.05s}.start-screen.animate-in .tile:nth-child(2){animation-delay:.1s}.start-screen.animate-in .tile:nth-child(3){animation-delay:.14s}.start-screen.animate-in .tile:nth-child(4){animation-delay:.18s}.start-screen.animate-in .tile:nth-child(5){animation-delay:.22s}.start-screen.animate-in .tile:nth-child(6){animation-delay:.26s}.start-screen.animate-in .tile:nth-child(7){animation-delay:.3s}.start-screen.animate-in .tile:nth-child(8){animation-delay:.34s}.start-screen.animate-in .tile:nth-child(9){animation-delay:.38s}.start-screen.animate-in .tile:nth-child(10){animation-delay:.42s}.start-screen.animate-in .tile:nth-child(11){animation-delay:.46s}
+.win-header{display:flex;justify-content:space-between;align-items:center;max-width:1320px;margin:0 auto 25px;padding-bottom:10px;padding-right:80px;width:100%;gap:16px}
+.win-user-area{display:flex;align-items:center;gap:16px;cursor:pointer;padding:6px 12px;transition:background .2s;min-width:0}
+.win-user-area:hover{background:rgba(255,255,255,.1)}
+.user-avatar{width:52px;height:52px;background:#00ADEF;border:2px solid rgba(255,255,255,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;box-shadow:0 4px 12px rgba(0,0,0,.35);flex-shrink:0}
+.user-name-title{font-size:24px;font-weight:200;display:flex;align-items:center;gap:10px;flex-wrap:wrap;word-break:break-word}
+.habit-badge-header{font-size:12px;font-weight:600;background:rgba(255,255,255,.15);padding:4px 10px;letter-spacing:.5px;text-transform:uppercase;border-radius:4px}
+.user-status-sub{font-size:13px;color:#a0d8ff;margin-top:2px}
+.header-clock{text-align:right;flex-shrink:0}
+.clock-time{font-size:36px;font-weight:200;line-height:1}
+.clock-date{font-size:13px;color:rgba(255,255,255,.8);margin-top:4px}
+.metro-container{max-width:1320px;margin:0 auto;width:100%}
+.groups-wrapper{display:flex;flex-wrap:wrap;gap:26px;width:100%}
+.tile-group{flex:1 1 310px;min-width:0;max-width:100%;width:100%}
+.group-header{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px;word-break:break-word}
+.group-header::before{content:'';width:4px;height:14px;background:#00ADEF;flex-shrink:0}
+
+/* Using minmax(0, 1fr) eliminates all horizontal Grid overflow on smartphones */
+.tiles-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%}
+.tile{position:relative;background:#2d2d2d;padding:15px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .1s ease-out,filter .2s;aspect-ratio:1;outline:2px solid transparent;min-width:0;overflow-wrap:break-word;word-wrap:break-word}
+.tile:hover{filter:brightness(1.12);outline:2px solid rgba(255,255,255,.25);z-index:2}
+.tile.tilt-top-left{transform:perspective(400px) rotateX(6deg) rotateY(-6deg) scale(.97)}
+.tile.tilt-top-right{transform:perspective(400px) rotateX(6deg) rotateY(6deg) scale(.97)}
+.tile.tilt-bottom-left{transform:perspective(400px) rotateX(-6deg) rotateY(-6deg) scale(.97)}
+.tile.tilt-bottom-right{transform:perspective(400px) rotateX(-6deg) rotateY(6deg) scale(.97)}
+.tile-2x2{grid-column:span 2;grid-row:span 2;aspect-ratio:1}
+.tile-4x2{grid-column:span 4;grid-row:span 2;aspect-ratio:2/1}
+.tile-4x4{grid-column:span 4;grid-row:span 4;aspect-ratio:1}
+.bg-emerald{background:#10893E}.bg-blue{background:#0078D7}.bg-navy{background:#1E3A8A}.bg-indigo{background:#4D394B}.bg-purple{background:#881798}.bg-teal{background:#008272}.bg-orange{background:#CA5010}.bg-red{background:#E81123}.bg-cyan{background:#0099BC}.bg-steel{background:#5558AF}.bg-dark{background:#1E1E1E}.bg-magenta{background:#9A0089}.bg-gold{background:#FF8C00}
+.t-icon{font-size:26px;line-height:1}
+.t-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;opacity:.9;overflow-wrap:break-word;word-break:break-word}
+.t-val{font-size:clamp(22px,6vw,42px);font-weight:100;line-height:1.1;word-break:break-all}
+.t-sub{font-size:11px;opacity:.75;margin-top:2px;overflow-wrap:break-word}
+.main-day-tile .val-box{margin-top:auto;min-width:0}
+.main-day-tile .days-num{font-size:clamp(65px,16vw,110px);font-weight:100;line-height:.88;letter-spacing:-2px}
+.main-day-tile .days-txt{font-size:clamp(16px,4vw,22px);font-weight:300;opacity:.9;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+.pulse-badge{position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.35);padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600}
+.dot-green{width:8px;height:8px;border-radius:50%;background:#50E3C2;animation:pulseGlow 1.8s infinite;flex-shrink:0}
+@keyframes pulseGlow{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.6}}
+.prog-wrap{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:8px;min-width:0}
+.prog-svg{transform:rotate(-90deg);flex-shrink:0}
+.prog-bg{fill:none;stroke:rgba(255,255,255,.2);stroke-width:7}
+.prog-fill{fill:none;stroke:#fff;stroke-width:7;transition:stroke-dashoffset .8s ease}
+.quote-box{display:flex;flex-direction:column;justify-content:center;height:100%}
+.quote-txt{font-size:13px;font-weight:300;font-style:italic;line-height:1.4}
+.quote-auth{font-size:11px;opacity:.7;margin-top:6px;font-weight:600}
+.live-preview-text{font-size:12px;line-height:1.4;opacity:.85;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.achiev-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-content:center;height:100%;width:100%}
+.achiev-item{text-align:center;opacity:.25;transition:all .3s;min-width:0}
+.achiev-item.unlocked{opacity:1;transform:scale(1.05)}
+.achiev-item.unlocked .a-ic{filter:drop-shadow(0 0 8px rgba(255,215,0,.6))}
+.a-ic{font-size:20px}
+.a-txt{font-size:9px;font-weight:600;margin-top:2px;overflow-wrap:break-word}
+.action-tile{align-items:center;justify-content:center;text-align:center}
+.action-tile .t-icon{font-size:32px;margin-bottom:6px}
+
+/* ===== MODALS (RESPONSIVE) ===== */
+.metro-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:1000;display:flex;justify-content:center;align-items:center;padding:16px;opacity:0;visibility:hidden;transition:all .25s cubic-bezier(.1,.9,.2,1)}
+.metro-modal-overlay.active{opacity:1;visibility:visible}
+.metro-modal-window{background:#1c1c1c;border:1px solid #3d3d3d;border-top:5px solid #00ADEF;width:100%;max-width:580px;padding:24px;box-shadow:0 15px 35px rgba(0,0,0,.7);transform:scale(.9);transition:transform .25s cubic-bezier(.1,.9,.2,1);max-height:92vh;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.metro-modal-overlay.active .metro-modal-window{transform:scale(1)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #333;gap:10px}
+.modal-title{font-size:22px;font-weight:300;display:flex;align-items:center;gap:10px;overflow-wrap:break-word}
+.modal-close{background:none;border:none;color:#aaa;font-size:24px;cursor:pointer;flex-shrink:0}
+.modal-close:hover{color:#e81123}
+.modal-body{overflow-y:auto;flex:1;padding-right:4px;min-width:0}
+.modal-footer{display:flex;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid #333;flex-wrap:wrap}
+.m-btn{flex:1 1 auto;padding:12px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border:none;cursor:pointer;transition:all .15s;text-align:center;min-width:120px}
+.m-btn-primary{background:#00ADEF;color:#fff}.m-btn-primary:hover{background:#2bbfeb}
+.m-btn-secondary{background:#3d3d3d;color:#ccc}.m-btn-secondary:hover{background:#4d4d4d;color:#fff}
+.m-btn-danger{background:#e81123;color:#fff}.m-btn-danger:hover{background:#ff293b}
+.todo-input-wrap{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.todo-input{flex:1 1 200px;padding:12px 14px;background:#282828;border:2px solid #444;color:#fff;font-size:15px;outline:none;min-width:0}
+.todo-input:focus{border-color:#00ADEF}
+.todo-add-btn{background:#10893E;color:#fff;border:none;padding:12px 22px;font-weight:600;cursor:pointer;flex-shrink:0}
+.todo-add-btn:hover{background:#13a149}
+.todo-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.todo-item{display:flex;align-items:center;justify-content:space-between;background:#262626;padding:10px 12px;border-left:4px solid #00ADEF;gap:10px}
+.todo-item.completed{border-left-color:#555;opacity:.6}
+.todo-item.completed .todo-text{text-decoration:line-through}
+.todo-left{display:flex;align-items:center;gap:10px;flex:1;cursor:pointer;min-width:0}
+.todo-checkbox{width:18px;height:18px;accent-color:#00ADEF;cursor:pointer;flex-shrink:0}
+.todo-text{font-size:14px;overflow-wrap:break-word;word-break:break-word}
+.todo-del{background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:4px 8px;flex-shrink:0}
+.todo-del:hover{color:#e81123}
+.calc-display{background:#141414;border:2px solid #333;padding:14px;text-align:right;margin-bottom:12px;min-width:0}
+.calc-sub{font-size:13px;color:#777;min-height:18px;font-family:monospace;overflow-x:auto}
+.calc-main{font-size:32px;font-weight:200;overflow-x:auto;font-family:monospace}
+.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.calc-btn{background:#303030;color:#fff;border:none;padding:16px 0;font-size:18px;cursor:pointer;transition:background .15s,transform .1s}
+.calc-btn:hover{background:#3f3f3f}.calc-btn:active{transform:scale(.96)}
+.calc-op{background:#1c5082;font-weight:600}.calc-op:hover{background:#2465a3}
+.calc-eq{background:#10893E;font-weight:600}.calc-eq:hover{background:#15a34a}
+.calc-clear{background:#a82020}.calc-clear:hover{background:#c72626}
+.note-input-area{width:100%;height:110px;background:#262626;border:2px solid #444;color:#fff;padding:12px;font-size:14px;resize:none;outline:none;margin-bottom:10px;box-sizing:border-box}
+.note-input-area:focus{border-color:#00ADEF}
+.note-list-container{display:flex;flex-direction:column;gap:10px;margin-top:15px;max-height:260px;overflow-y:auto}
+.note-card{background:#242424;border-left:4px solid #FF8C00;padding:12px;position:relative}
+.note-time{font-size:11px;color:#888;margin-bottom:6px}
+.note-content{font-size:13px;color:#eee;line-height:1.5;overflow-wrap:break-word}
+.note-del-btn{position:absolute;top:8px;right:8px;background:none;border:none;color:#666;font-size:16px;cursor:pointer}
+.note-del-btn:hover{color:#e81123}
+.about-legal-box{background:#232323;border-left:4px solid #0078D7;padding:14px;margin-top:14px;font-size:12px;color:#ccc;line-height:1.6;overflow-wrap:break-word}
+.about-title-sub{font-size:14px;font-weight:600;color:#fff;margin-top:14px;margin-bottom:6px}
+.hidden{display:none!important}
+
+/* ===== CROSS-PLATFORM MOBILE & PORTRAIT SCREEN OPTIMIZATION (1080x2400 & All Viewports) ===== */
+@media(min-width:1024px){
+  .groups-wrapper{flex-wrap:nowrap}
+}
+@media(max-width:1023px){
+  .groups-wrapper{flex-direction:column;gap:28px}
+  .tile-group{width:100%;min-width:0;flex:1 1 100%}
+  .win-header{padding-right:0;margin-bottom:20px}
+}
+@media(max-width:767px){
+  .start-screen{padding:16px}
+  .win-header{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:24px;padding-top:48px;width:100%}
+  .win-user-area{width:100%;background:rgba(255,255,255,.05);border-radius:6px;padding:8px 12px}
+  .header-clock{text-align:left;align-self:flex-start;padding-left:4px}
+  .clock-time{font-size:32px}
+  .user-name-title{font-size:20px}
+  .addiction-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  
+  /* Converting strict aspect-ratios to flexible heights prevents all vertical/horizontal overflows */
+  .tile-2x2{aspect-ratio:auto;min-height:130px;grid-row:auto}
+  .tile-4x2{aspect-ratio:auto;min-height:115px;grid-row:auto}
+  .tile-4x4{aspect-ratio:auto;min-height:220px;grid-row:auto;padding:18px}
+  .tile{padding:13px}
+  
+  .t-icon{font-size:24px}
+  .t-val{font-size:clamp(20px,5.5vw,32px)}
+  .pulse-badge{top:12px;right:12px;padding:3px 8px;font-size:9px}
+  
+  .metro-modal-window{padding:16px;max-height:95vh}
+  .m-btn{min-width:100%}
+  .boot-disclaimer{bottom:10px;font-size:10px}
+}
+@media(max-width:380px){
+  .tile-2x2{min-height:120px;padding:10px}
+  .t-val{font-size:20px}
+  .achiev-grid{gap:4px}
+  .a-ic{font-size:17px}
+  .a-txt{font-size:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- GLOBAL LANGUAGE TOGGLE -->
+<button class="lang-toggle hidden" id="langToggle" title="Change language / Dili değiştir">
+  <span class="flag" id="langFlag">🇹🇷</span>
+  <span class="code" id="langCode">TR</span>
+</button>
+
+<!-- 1. BOOT SCREEN -->
+<div id="bootScreen" class="boot-screen">
+  <svg class="boot-custom-emblem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5 L88 22 V52 C88 74 69 91 50 95 C31 91 12 74 12 52 V22 L50 5Z" fill="#0078D7" fill-opacity="0.3" stroke="#00ADEF" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M50 20 L72 38 L50 78 L28 38 L50 20Z" fill="#00ADEF"/>
+    <path d="M50 20 L72 38 L50 50 L28 38 L50 20Z" fill="#FFFFFF" fill-opacity="0.9"/>
+    <circle cx="50" cy="53" r="10" fill="#000000"/>
+    <path d="M45 53 L49 48 L53 55 L57 50" stroke="#00ADEF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="win8-spinner">
+    <div class="win8-ring"></div><div class="win8-ring"></div><div class="win8-ring"></div><div class="win8-ring"></div><div class="win8-ring"></div>
+  </div>
+  <div class="boot-main-title" data-i18n="bootTitle"></div>
+  <div class="boot-disclaimer" data-i18n="bootLegal"></div>
+</div>
+
+<!-- 2. OOBE SETUP -->
+<div id="oobeScreen" class="oobe-screen hidden">
+  <div class="oobe-box">
+    <h1 class="oobe-title" data-i18n="oobeTitle"></h1>
+    <p class="oobe-desc" data-i18n="oobeDesc"></p>
+    <form id="setupForm" novalidate>
+      <div class="form-group">
+        <label class="oobe-label"><span data-i18n="oobeStep1"></span> <span style="color:#ff4754">*</span></label>
+        <input type="text" id="userNameInput" class="oobe-input" data-i18n-ph="oobeNamePh" required autocomplete="off">
+        <div id="nameError" class="error-text" data-i18n="errName"></div>
+      </div>
+      <div class="form-group">
+        <label class="oobe-label"><span data-i18n="oobeStep2"></span> <span style="color:#ff4754">*</span></label>
+        <div class="addiction-grid" id="addictionGrid">
+          <div class="addict-card selected" data-key="smoke" data-icon="🚭"><div class="addict-ic">🚭</div><div class="addict-name" data-i18n="hbSmoke"></div></div>
+          <div class="addict-card" data-key="vape" data-icon="💨"><div class="addict-ic">💨</div><div class="addict-name" data-i18n="hbVape"></div></div>
+          <div class="addict-card" data-key="gamble" data-icon="🎰"><div class="addict-ic">🎰</div><div class="addict-name" data-i18n="hbGamble"></div></div>
+          <div class="addict-card" data-key="porn" data-icon="🛡️"><div class="addict-ic">🛡️</div><div class="addict-name" data-i18n="hbPorn"></div></div>
+          <div class="addict-card" data-key="alcohol" data-icon="🍷"><div class="addict-ic">🍷</div><div class="addict-name" data-i18n="hbAlcohol"></div></div>
+          <div class="addict-card" data-key="social" data-icon="📱"><div class="addict-ic">📱</div><div class="addict-name" data-i18n="hbSocial"></div></div>
+          <div class="addict-card" data-key="sugar" data-icon="🍭"><div class="addict-ic">🍭</div><div class="addict-name" data-i18n="hbSugar"></div></div>
+          <div class="addict-card" data-key="game" data-icon="🎮"><div class="addict-ic">🎮</div><div class="addict-name" data-i18n="hbGame"></div></div>
+          <div class="addict-card" data-key="custom" data-icon="✏️"><div class="addict-ic">✏️</div><div class="addict-name" data-i18n="hbCustom"></div></div>
+        </div>
+        <div id="customHabitContainer" class="hidden" style="margin-top:10px">
+          <input type="text" id="customHabitInput" class="oobe-input" data-i18n-ph="customPh" autocomplete="off">
+          <div id="habitError" class="error-text" data-i18n="errHabit"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="oobe-label"><span data-i18n="oobeStep3"></span> <span style="color:#ff4754">*</span></label>
+        <input type="date" id="startDateInput" class="oobe-input" required>
+        <div id="dateError" class="error-text" data-i18n="errDate"></div>
+      </div>
+      <button type="submit" class="oobe-btn" data-i18n="oobeStart"></button>
+    </form>
+  </div>
+  <div class="setup-legal-notice" data-i18n="setupLegal"></div>
+</div>
+
+<!-- 3. METRO START SCREEN -->
+<div id="startScreen" class="start-screen hidden">
+  <header class="win-header">
+    <div class="win-user-area" id="btnHeaderProfile">
+      <div class="user-avatar">👤</div>
+      <div>
+        <div class="user-name-title">
+          <span id="displayUsername">—</span>
+          <span class="habit-badge-header" id="displayHabitBadge">—</span>
+        </div>
+        <div class="user-status-sub" id="displayLevelName">—</div>
+      </div>
+    </div>
+    <div class="header-clock">
+      <div class="clock-time" id="clockTime">00:00</div>
+      <div class="clock-date" id="clockDate">—</div>
+    </div>
+  </header>
+
+  <main class="metro-container">
+    <div class="groups-wrapper">
+
+      <div class="tile-group">
+        <div class="group-header" data-i18n="grpProgress"></div>
+        <div class="tiles-grid">
+          <div class="tile tile-4x4 bg-emerald main-day-tile tilt-effect">
+            <div class="pulse-badge"><div class="dot-green"></div><span data-i18n="ongoing"></span></div>
+            <div><div class="t-label" id="mainTileTargetLabel">—</div></div>
+            <div class="val-box">
+              <div class="days-num" id="counterDays">0</div>
+              <div class="days-txt" data-i18n="daysDone"></div>
+            </div>
+          </div>
+          <div class="tile tile-2x2 bg-blue tilt-effect">
+            <span class="t-icon">⏱️</span>
+            <div><div class="t-val" id="counterHours">0</div><div class="t-label" data-i18n="totalHours"></div></div>
+          </div>
+          <div class="tile tile-2x2 bg-purple tilt-effect">
+            <span class="t-icon">📅</span>
+            <div><div class="t-val" id="counterWeeks">0</div><div class="t-label" data-i18n="weeks"></div></div>
+          </div>
+          <div class="tile tile-2x2 bg-gold tilt-effect">
+            <span class="t-icon">🏆</span>
+            <div><div class="t-val" id="bestStreakVal">0</div><div class="t-label" data-i18n="record"></div></div>
+          </div>
+          <div class="tile tile-2x2 bg-red tilt-effect">
+            <span class="t-icon">🔄</span>
+            <div><div class="t-val" id="attemptsVal">1</div><div class="t-label" data-i18n="attempts"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-group">
+        <div class="group-header" data-i18n="grpApps"></div>
+        <div class="tiles-grid">
+          <div class="tile tile-4x2 bg-teal tilt-effect" id="btnOpenTodo">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <span class="t-icon">✓</span>
+              <span class="t-label" style="background:rgba(0,0,0,.25);padding:3px 8px;border-radius:12px" id="todoBadge">—</span>
+            </div>
+            <div>
+              <div class="t-label" data-i18n="todoTitle"></div>
+              <div class="live-preview-text" id="todoPreview">—</div>
+            </div>
+          </div>
+          <div class="tile tile-2x2 bg-orange tilt-effect" id="btnOpenNotes">
+            <span class="t-icon">📝</span>
+            <div><div class="t-label" data-i18n="notesTile"></div><div class="t-sub" id="notesCountText">—</div></div>
+          </div>
+          <div class="tile tile-2x2 bg-cyan tilt-effect" id="btnOpenCalc">
+            <span class="t-icon">🧮</span>
+            <div><div class="t-val" style="font-size:clamp(18px,5vw,26px);white-space:nowrap">+ − × ÷</div><div class="t-label" data-i18n="calcTile"></div></div>
+          </div>
+          <div class="tile tile-4x2 bg-indigo tilt-effect" id="tileQuote">
+            <div class="quote-box">
+              <div class="quote-txt" id="quoteText">—</div>
+              <div class="quote-auth" id="quoteAuthor">—</div>
+            </div>
+          </div>
+          <div class="tile tile-4x2 bg-steel tilt-effect" style="justify-content:space-between">
+            <div class="t-label" data-i18n="goal90"></div>
+            <div class="prog-wrap">
+              <svg class="prog-svg" width="60" height="60" viewBox="0 0 70 70">
+                <circle class="prog-bg" cx="35" cy="35" r="28"/>
+                <circle class="prog-fill" id="progressCircle" cx="35" cy="35" r="28" stroke-dasharray="176" stroke-dashoffset="176"/>
+              </svg>
+              <div style="min-width:0">
+                <div class="t-val" id="progressPercent" style="font-size:clamp(24px,6vw,32px)">0%</div>
+                <div class="t-sub" id="remainingDaysTxt" style="word-break:break-word">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-group">
+        <div class="group-header" data-i18n="grpActions"></div>
+        <div class="tiles-grid">
+          <div class="tile tile-2x2 bg-emerald action-tile tilt-effect" id="actionNewStart">
+            <div class="t-icon">▶️</div><div class="t-label" data-i18n="actNewStart"></div>
+          </div>
+          <div class="tile tile-2x2 bg-red action-tile tilt-effect" id="actionReset">
+            <div class="t-icon">↩️</div><div class="t-label" data-i18n="actReset"></div>
+          </div>
+          <div class="tile tile-4x2 bg-dark tilt-effect" id="actionSettings">
+            <div style="display:flex;align-items:center;gap:15px;height:100%">
+              <span style="font-size:38px">⚙️</span>
+              <div>
+                <div style="font-size:18px;font-weight:400" data-i18n="settingsTile"></div>
+                <div class="t-sub" data-i18n="settingsSub"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tile tile-2x2 bg-navy action-tile tilt-effect" id="btnOpenAbout">
+            <div class="t-icon">ℹ️</div><div class="t-label" data-i18n="aboutTile"></div>
+          </div>
+          <div class="tile tile-2x2 bg-magenta tilt-effect">
+            <span class="t-icon">👑</span>
+            <div><div class="t-val" id="badgeCountText" style="font-size:30px">0/4</div><div class="t-label" data-i18n="badgesEarned"></div></div>
+          </div>
+          <div class="tile tile-4x2 tilt-effect" style="background:#770069">
+            <div class="t-label" style="margin-bottom:8px" data-i18n="badgesTitle"></div>
+            <div class="achiev-grid" id="achievementsList">
+              <div class="achiev-item" data-days="1"><div class="a-ic">🎯</div><div class="a-txt" data-i18n="b1d"></div></div>
+              <div class="achiev-item" data-days="7"><div class="a-ic">⭐</div><div class="a-txt" data-i18n="b1w"></div></div>
+              <div class="achiev-item" data-days="30"><div class="a-ic">🏆</div><div class="a-txt" data-i18n="b1m"></div></div>
+              <div class="achiev-item" data-days="90"><div class="a-ic">👑</div><div class="a-txt" data-i18n="b90d"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODALS -->
+<div id="confirmModal" class="metro-modal-overlay">
+  <div class="metro-modal-window" style="max-width:440px">
+    <div class="modal-header"><span class="modal-title" id="confirmTitle"></span><button class="modal-close" data-close="confirmModal">✕</button></div>
+    <div class="modal-body"><p id="confirmDesc" style="font-size:15px;color:#ccc;line-height:1.5"></p></div>
+    <div class="modal-footer">
+      <button class="m-btn m-btn-primary" id="btnConfirmYes" data-i18n="yesContinue"></button>
+      <button class="m-btn m-btn-secondary" data-close="confirmModal" data-i18n="cancel"></button>
+    </div>
+  </div>
+</div>
+
+<div id="todoModal" class="metro-modal-overlay">
+  <div class="metro-modal-window">
+    <div class="modal-header"><span class="modal-title" data-i18n="todoModalTitle"></span><button class="modal-close" data-close="todoModal">✕</button></div>
+    <div class="modal-body">
+      <div class="todo-input-wrap">
+        <input type="text" id="todoInput" class="todo-input" data-i18n-ph="todoPh">
+        <button class="todo-add-btn" id="btnAddTodo" data-i18n="addBtn"></button>
+      </div>
+      <div id="todoEmptyState" style="text-align:center;padding:30px 0;color:#666" data-i18n="todoEmpty"></div>
+      <ul class="todo-list" id="todoListUI"></ul>
+    </div>
+    <div class="modal-footer"><button class="m-btn m-btn-secondary" data-close="todoModal" data-i18n="close"></button></div>
+  </div>
+</div>
+
+<div id="notesModal" class="metro-modal-overlay">
+  <div class="metro-modal-window">
+    <div class="modal-header"><span class="modal-title" data-i18n="notesModalTitle"></span><button class="modal-close" data-close="notesModal">✕</button></div>
+    <div class="modal-body">
+      <textarea id="noteTextarea" class="note-input-area" data-i18n-ph="notePh"></textarea>
+      <button class="m-btn m-btn-primary" style="width:100%" id="btnSaveNote" data-i18n="saveBtn"></button>
+      <div class="note-list-container" id="notesListUI"></div>
+    </div>
+    <div class="modal-footer"><button class="m-btn m-btn-secondary" data-close="notesModal" data-i18n="close"></button></div>
+  </div>
+</div>
+
+<div id="calcModal" class="metro-modal-overlay">
+  <div class="metro-modal-window" style="max-width:380px">
+    <div class="modal-header"><span class="modal-title" data-i18n="calcModalTitle"></span><button class="modal-close" data-close="calcModal">✕</button></div>
+    <div class="modal-body">
+      <div class="calc-display"><div class="calc-sub" id="calcSubDisplay"></div><div class="calc-main" id="calcMainDisplay">0</div></div>
+      <div class="calc-grid">
+        <button class="calc-btn calc-clear" onclick="calcClear()">C</button>
+        <button class="calc-btn calc-op" onclick="calcAppend('(')">(</button>
+        <button class="calc-btn calc-op" onclick="calcAppend(')')">)</button>
+        <button class="calc-btn calc-op" onclick="calcOp('/')">÷</button>
+        <button class="calc-btn" onclick="calcNum('7')">7</button>
+        <button class="calc-btn" onclick="calcNum('8')">8</button>
+        <button class="calc-btn" onclick="calcNum('9')">9</button>
+        <button class="calc-btn calc-op" onclick="calcOp('*')">×</button>
+        <button class="calc-btn" onclick="calcNum('4')">4</button>
+        <button class="calc-btn" onclick="calcNum('5')">5</button>
+        <button class="calc-btn" onclick="calcNum('6')">6</button>
+        <button class="calc-btn calc-op" onclick="calcOp('-')">−</button>
+        <button class="calc-btn" onclick="calcNum('1')">1</button>
+        <button class="calc-btn" onclick="calcNum('2')">2</button>
+        <button class="calc-btn" onclick="calcNum('3')">3</button>
+        <button class="calc-btn calc-op" onclick="calcOp('+')">+</button>
+        <button class="calc-btn" onclick="calcNum('0')">0</button>
+        <button class="calc-btn" onclick="calcNum('00')">00</button>
+        <button class="calc-btn" onclick="calcNum('.')">.</button>
+        <button class="calc-btn calc-eq" onclick="calcEqual()">=</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="aboutModal" class="metro-modal-overlay">
+  <div class="metro-modal-window">
+    <div class="modal-header"><span class="modal-title" data-i18n="aboutModalTitle"></span><button class="modal-close" data-close="aboutModal">✕</button></div>
+    <div class="modal-body">
+      <h3 style="font-size:22px;font-weight:300;color:#00ADEF" data-i18n="appName"></h3>
+      <p style="font-size:13px;color:#999;margin-top:4px" data-i18n="appVersion"></p>
+      <div class="about-title-sub" data-i18n="aboutPurposeTitle"></div>
+      <p style="font-size:14px;color:#e0e0e0;line-height:1.5" data-i18n="aboutPurposeBody"></p>
+      <div class="about-title-sub" style="color:#ff4754" data-i18n="aboutLegalTitle"></div>
+      <div class="about-legal-box" data-i18n="aboutLegalBody"></div>
+      <div class="about-title-sub" data-i18n="aboutPrivacyTitle"></div>
+      <p style="font-size:13px;color:#aaa;line-height:1.4" data-i18n="aboutPrivacyBody"></p>
+    </div>
+    <div class="modal-footer"><button class="m-btn m-btn-primary" data-close="aboutModal" data-i18n="understood"></button></div>
+  </div>
+</div>
+
+<div id="settingsModal" class="metro-modal-overlay">
+  <div class="metro-modal-window">
+    <div class="modal-header"><span class="modal-title" data-i18n="settingsModalTitle"></span><button class="modal-close" data-close="settingsModal">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="oobe-label" data-i18n="setName"></label>
+        <input type="text" id="settingUsername" class="oobe-input" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="oobe-label" data-i18n="setHabit"></label>
+        <input type="text" id="settingHabitName" class="oobe-input" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="oobe-label" data-i18n="setIcon"></label>
+        <input type="text" id="settingHabitIcon" class="oobe-input" style="max-width:100px;text-align:center;font-size:22px" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label class="oobe-label" data-i18n="setDate"></label>
+        <input type="date" id="settingDate" class="oobe-input">
+      </div>
+      <hr style="border-color:#333;margin:20px 0">
+      <label class="oobe-label" style="color:#10c95e" data-i18n="backupTitle"></label>
+      <p style="font-size:12px;color:#aaa;margin-bottom:12px;line-height:1.5" data-i18n="backupDesc"></p>
+      <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <button class="m-btn" style="background:#10893E;color:#fff;min-width:150px" onclick="exportAppData()" data-i18n="exportBtn"></button>
+        <button class="m-btn" style="background:#0078D7;color:#fff;min-width:150px" onclick="document.getElementById('importFileInput').click()" data-i18n="importBtn"></button>
+      </div>
+      <input type="file" id="importFileInput" accept="application/json,.json" style="display:none">
+      <div id="ioStatusMsg" style="font-size:12px;margin-top:6px;min-height:16px"></div>
+      <hr style="border-color:#333;margin:20px 0">
+      <label class="oobe-label" style="color:#ff4754" data-i18n="dangerZone"></label>
+      <p style="font-size:12px;color:#aaa;margin-bottom:10px" data-i18n="dangerDesc"></p>
+      <button class="m-btn m-btn-danger" style="width:100%" onclick="resetAllApp()" data-i18n="factoryReset"></button>
+    </div>
+    <div class="modal-footer">
+      <button class="m-btn m-btn-primary" id="btnSaveSettings" data-i18n="saveSettings"></button>
+      <button class="m-btn m-btn-secondary" data-close="settingsModal" data-i18n="close"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==================================================
+   FULL i18n DICTIONARY
+   ================================================== */
+const I18N = {
+tr:{
+ htmlLang:"tr", flag:"🇹🇷", code:"TR", docTitle:"Metro UI Anti-Bağımlılık Yazılımı",
+ bootTitle:"METRO UI ANTİ-BAĞIMLILIK YAZILIMI",
+ bootLegal:"Yasal Uyarı: Metro arayüzü ve tasarım dili Microsoft Corporation'a ait ticari markalardır. Bu bağımsız yazılımın Microsoft Corporation ile herhangi bir resmi bağı veya ortaklığı bulunmamaktadır.",
+ oobeTitle:"Özgürlüğe Adım At",
+ oobeDesc:"Yeniden doğuş yolculuğun başlıyor. Kurtulmak istediğin bağımlılığı veya zararlı alışkanlığını belirle, iradenin sınırlarını keşfet.",
+ oobeStep1:"1. SİZE NASIL HİTAP EDELİM?",
+ oobeNamePh:"Adınızı veya takma adınızı yazın",
+ errName:"Sizi tanıyabilmemiz için bir isme ihtiyacımız var. Daha kişisel ve kesintisiz bir deneyim sunabilmek adına isimsiz kuruluma devam edilemiyor.",
+ oobeStep2:"2. KURTULMAK İSTEDİĞİNİZ BAĞIMLILIK HEDEFİ",
+ hbSmoke:"Sigara", hbVape:"Elektronik Sigara", hbGamble:"Kumar & Bahis", hbPorn:"Fap & Porno",
+ hbAlcohol:"Alkol", hbSocial:"Sosyal Medya & Ekran", hbSugar:"Şeker & Abur Cubur", hbGame:"Aşırı Oyun",
+ hbCustom:"Diğer / Kendim Yazacağım",
+ customPh:"Örn: Kafein, aşırı harcama, gece geç yatmak...",
+ errHabit:"Lütfen kurtulmak istediğiniz bağımlılığı veya alışkanlığı yazın.",
+ oobeStep3:"3. SERİYE BAŞLADIĞINIZ GÜN",
+ errDate:"Gelecekteki bir tarihi veya geçersiz bir tarihi seçemezsiniz.",
+ oobeStart:"Sistemi Başlat ➔",
+ setupLegal:"* Yasal Uyarı: Metro arayüzü ve tasarım dili Microsoft Corporation'a aittir. Bu yazılımın Microsoft ile resmi bir bağı yoktur. Tüm verileriniz yalnızca cihazınızda saklanır.",
+ grpProgress:"İLERLEME TAKİBİ", grpApps:"UYGULAMACIKLAR & NOTLAR", grpActions:"İŞLEMLER & BİLGİLER",
+ ongoing:"DEVAM EDİYOR", daysDone:"GÜN GEÇTİ", totalHours:"TOPLAM SAAT", weeks:"HAFTA",
+ record:"REKOR (GÜN)", attempts:"TOPLAM DENEME",
+ todoTitle:"YAPILACAKLAR LİSTESİ", notesTile:"GÜNLÜK & NOT", calcTile:"HESAP MAKİNESİ",
+ goal90:"90 GÜNLÜK TAM ARINMA HEDEFİ",
+ actNewStart:"YENİ SERİ BAŞLAT", actReset:"SERİYİ SIFIRLA",
+ settingsTile:"Sistem Ayarları", settingsSub:"Hedef, isim, tarih · 💾 Yedek Al / Yükle",
+ aboutTile:"HAKKINDA & YASAL UYARI", badgesEarned:"KAZANILAN ROZET", badgesTitle:"TAM ARINMA ROZETLERİ",
+ b1d:"1 GÜN", b1w:"1 HAFTA", b1m:"1 AY", b90d:"90 GÜN",
+ seriesSuffix:"SERİSİ", daysLeft:"{n} gün kaldı", goalDone:"✨ TAM ARINMA TAMAMLANDI!",
+ todoBadge:"{n} görev bekliyor", todoEmptyPreview:"Zamanını ve zihnini dolu tutmak için hedefler ekle...",
+ todoAllDone:"✨ Tüm hedefleri tamamladın, tebrikler!",
+ notesCount:"{n} kayıtlı not", noNotes:"Hiç not kaydedilmemiş.",
+ todoModalTitle:"✓ Yapılacaklar Listesi", todoPh:"Yeni bir görev veya hedef ekle...", addBtn:"+ EKLE",
+ todoEmpty:"Henüz eklenmiş görev yok. Zihnine faydalı meşguliyetler bul!",
+ notesModalTitle:"📝 Günlük & Düşünceler", notePh:"Bugün iraden nasıl? Hislerini ve stratejilerini buraya yaz...",
+ saveBtn:"KAYDET", calcModalTitle:"🧮 Hesap Makinesi",
+ close:"Kapat", cancel:"İptal", yesContinue:"Evet, Devam Et", understood:"Anladım, Kapat",
+ aboutModalTitle:"ℹ️ Hakkında & Yasal Uyarı",
+ appName:"Metro UI Anti-Bağımlılık Yazılımı", appVersion:"Sürüm: v3.0 — Windows 8 Metro Edition",
+ aboutPurposeTitle:"🎯 Yazılımın Amacı",
+ aboutPurposeBody:"Bu uygulama; sigara, kumar, ekran bağımlılığı, fap & porno veya diğer zararlı alışkanlıklardan kurtulmayı desteklemek için geliştirilmiş evrensel bir irade takip ve disiplin sistemidir.",
+ aboutLegalTitle:"⚖️ Ticari Marka Beyanı",
+ aboutLegalBody:"Bu yazılımda kullanılan \"Metro\" tasarım dili, karo yerleşimi ve açılış animasyonu stili tamamen görsel/estetik amaçlıdır. Windows ve Metro, Microsoft Corporation'a ait tescilli ticari markalardır. Bu yazılımın Microsoft Corporation ile hiçbir resmi bağı, ortaklığı veya sponsorluğu bulunmamaktadır.",
+ aboutPrivacyTitle:"🔒 Gizlilik",
+ aboutPrivacyBody:"Girdiğiniz hiçbir isim, not, görev veya tarih sunucuya gönderilmez. Tüm veriler tarayıcınızın yerel hafızasında çevrimdışı saklanır.",
+ settingsModalTitle:"⚙️ Sistem Ayarları",
+ setName:"SİZE NASIL HİTAP EDELİM?", setHabit:"HEDEF / BAĞIMLILIK ADI", setIcon:"HEDEF İKONU",
+ setDate:"BAŞLANGIÇ TARİHİ (GELECEK TARİH SEÇİLEMEZ)",
+ backupTitle:"💾 VERİ YEDEKLEME & AKTARIM",
+ backupDesc:"Tüm serinizi, rekorunuzu, notlarınızı ve görevlerinizi .json dosyası olarak dışa aktarabilir, başka bir cihazda içe aktararak devam edebilirsiniz.",
+ exportBtn:"⬇️ Dışa Aktar", importBtn:"⬆️ İçe Aktar",
+ dangerZone:"TEHLİKELİ BÖLGE", dangerDesc:"Tüm rekorlarınızı, görevlerinizi ve notlarınızı kalıcı olarak siler.",
+ factoryReset:"Tüm Verileri Sıfırla (Fabrika Ayarları)", saveSettings:"Ayarları Kaydet",
+ cfmNewTitle:"Yeni Seri Başlat",
+ cfmNewDesc:"{habit} hedefin için mevcut seriyi bitirip sıfırdan yeni bir başlangıç yapmak istiyor musun?",
+ cfmResetTitle:"Seriyi Sıfırla",
+ cfmResetDesc:"İradene karşı anlık yenik mi düştün? Pes etme! Hatayı kabul etmek kurtuluşun en önemli adımıdır. Sayacı sıfırlayalım mı?",
+ alertName:"Sizi tanıyabilmemiz için bir isme ihtiyacımız var. Bu alan boş bırakılamıyor.",
+ alertHabit:"Kurtulmak istediğiniz hedef boş bırakılamaz.",
+ alertDate:"Gelecekteki veya geçersiz bir tarihi başlangıç olarak seçemezsiniz.",
+ ioOk:"✅ Yedek dosyanız başarıyla indirildi!", ioErr:"⚠️ Dışa aktarma sırasında hata oluştu.",
+ ioBad:"⚠️ Geçersiz veya bozuk yedek dosyası!", ioBadDate:"⚠️ Yedekteki tarih geçersiz! İçe aktarma iptal edildi.",
+ ioConfirm:"⚠️ DİKKAT: Mevcut tüm verileriniz bu yedekle değiştirilecek. Devam edilsin mi?",
+ ioLoaded:"✅ Yedek yüklendi! Hoş geldin, {name}.", ioRead:"⚠️ Dosya okunamadı. Geçerli bir .json seçin.",
+ resetConfirm:"⚠️ UYARI: Tüm seriniz, rekorunuz, notlarınız ve görevleriniz kalıcı olarak silinecek! Emin misiniz?",
+ months:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+ days:['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
+ habits:{smoke:"Sigara Bağımlılığı",vape:"Elektronik Sigara",gamble:"Kumar & Bahis",porn:"Fap & Porno Bağımlılığı",alcohol:"Alkol Bağımlılığı",social:"Sosyal Medya & Ekran",sugar:"Şeker & Abur Cubur",game:"Oyun Bağımlılığı"},
+ levels:[[0,"🌱 Başlangıç (Kararlı)"],[3,"🌿 İrade Yolcusu"],[7,"🌳 Özdenetim Sahibi"],[14,"⚔️ Zincir Kırıcı"],[30,"🛡️ Özgür Şampiyon"],[60,"💎 Elmas Zihin"],[90,"👑 Tam Arınmış Usta"],[180,"🦅 Yenilmez Efsane"],[365,"🌟 İrade İmparatoru"]],
+ quotes:[["Kendini yenmek, tüm zaferlerin en büyüğüdür.","Platon"],["Disiplin, özgürlüğe giden tek gerçek köprüdür.","Jocko Willink"],["Alışkanlık zincirleri, kırılamayacak kadar ağırlaşana dek hissedilmez.","Warren Buffett"],["Bugün zor olanı yap ki yarının kolay olsun.","Anonim"],["Acı geçicidir, ama vazgeçersen pişmanlık kalıcıdır.","Lance Armstrong"],["Bağımlılığın bittiği gün, özgürlüğün başladığı gündür.","Anonim"],["En karanlık gece bile şafakla sona erer.","Victor Hugo"],["Düşmek ayıp değil, düştüğün yerde kalmak ayıp.","Türk Atasözü"],["İrade kas gibidir; direndikçe güçlenir.","David Goggins"]]
+},
+en:{
+ htmlLang:"en", flag:"🇬🇧", code:"EN", docTitle:"Metro UI Anti-Addiction Software",
+ bootTitle:"METRO UI ANTI-ADDICTION SOFTWARE",
+ bootLegal:"Legal Notice: The Metro interface and design language are trademarks of Microsoft Corporation. This independent software has no official affiliation or partnership with Microsoft Corporation.",
+ oobeTitle:"Step Into Freedom",
+ oobeDesc:"Your journey of rebirth begins now. Choose the addiction or harmful habit you want to break, and discover the limits of your willpower.",
+ oobeStep1:"1. WHAT SHOULD WE CALL YOU?",
+ oobeNamePh:"Enter your name or nickname",
+ errName:"We need a name to recognise you. To provide a more personal and seamless experience, setup can't continue without one.",
+ oobeStep2:"2. THE ADDICTION YOU WANT TO BREAK",
+ hbSmoke:"Smoking", hbVape:"Vaping / E-Cig", hbGamble:"Gambling & Betting", hbPorn:"Fap & Porn",
+ hbAlcohol:"Alcohol", hbSocial:"Social Media & Screen", hbSugar:"Sugar & Junk Food", hbGame:"Excessive Gaming",
+ hbCustom:"Other / I'll Type My Own",
+ customPh:"e.g. Caffeine, overspending, staying up late...",
+ errHabit:"Please type the addiction or habit you want to overcome.",
+ oobeStep3:"3. THE DAY YOU STARTED YOUR STREAK",
+ errDate:"You can't select a future or invalid date.",
+ oobeStart:"Start System ➔",
+ setupLegal:"* Legal Notice: The Metro interface and design language belong to Microsoft Corporation. This software has no official affiliation with Microsoft. All your data is stored only on your device.",
+ grpProgress:"PROGRESS TRACKING", grpApps:"MINI APPS & NOTES", grpActions:"ACTIONS & INFO",
+ ongoing:"ONGOING", daysDone:"DAYS CLEAN", totalHours:"TOTAL HOURS", weeks:"WEEKS",
+ record:"RECORD (DAYS)", attempts:"TOTAL ATTEMPTS",
+ todoTitle:"TO-DO LIST", notesTile:"JOURNAL & NOTES", calcTile:"CALCULATOR",
+ goal90:"90-DAY FULL RECOVERY GOAL",
+ actNewStart:"START NEW STREAK", actReset:"RESET STREAK",
+ settingsTile:"System Settings", settingsSub:"Goal, name, date · 💾 Backup / Restore",
+ aboutTile:"ABOUT & LEGAL NOTICE", badgesEarned:"BADGES EARNED", badgesTitle:"RECOVERY BADGES",
+ b1d:"1 DAY", b1w:"1 WEEK", b1m:"1 MONTH", b90d:"90 DAYS",
+ seriesSuffix:"STREAK", daysLeft:"{n} days left", goalDone:"✨ FULL RECOVERY COMPLETE!",
+ todoBadge:"{n} tasks pending", todoEmptyPreview:"Add goals to keep your time and mind occupied...",
+ todoAllDone:"✨ All tasks complete. Well done!",
+ notesCount:"{n} saved notes", noNotes:"No notes saved yet.",
+ todoModalTitle:"✓ To-Do List", todoPh:"Add a new task or goal...", addBtn:"+ ADD",
+ todoEmpty:"No tasks added yet. Find healthy things to keep your mind busy!",
+ notesModalTitle:"📝 Journal & Thoughts", notePh:"How is your willpower today? Write your feelings and strategies here...",
+ saveBtn:"SAVE", calcModalTitle:"🧮 Calculator",
+ close:"Close", cancel:"Cancel", yesContinue:"Yes, Continue", understood:"Got It, Close",
+ aboutModalTitle:"ℹ️ About & Legal Notice",
+ appName:"Metro UI Anti-Addiction Software", appVersion:"Version: v3.0 — Windows 8 Metro Edition",
+ aboutPurposeTitle:"🎯 Purpose of the Software",
+ aboutPurposeBody:"This app is a universal willpower tracking and discipline system built to help people break free from smoking, gambling, screen addiction, fap & porn, or any other harmful habit.",
+ aboutLegalTitle:"⚖️ Trademark Statement",
+ aboutLegalBody:"The \"Metro\" design language, tile layout and boot animation style used here are purely for visual and aesthetic purposes. Windows and Metro are registered trademarks of Microsoft Corporation. This software has no official affiliation, partnership or sponsorship with Microsoft Corporation.",
+ aboutPrivacyTitle:"🔒 Privacy",
+ aboutPrivacyBody:"No name, note, task or date you enter is ever sent to a server. Everything is stored offline in your browser's local storage.",
+ settingsModalTitle:"⚙️ System Settings",
+ setName:"WHAT SHOULD WE CALL YOU?", setHabit:"GOAL / ADDICTION NAME", setIcon:"GOAL ICON",
+ setDate:"START DATE (FUTURE DATES NOT ALLOWED)",
+ backupTitle:"💾 DATA BACKUP & TRANSFER",
+ backupDesc:"Export your streak, record, notes and tasks as a .json file, then import it on another device to continue right where you left off.",
+ exportBtn:"⬇️ Export Data", importBtn:"⬆️ Import Data",
+ dangerZone:"DANGER ZONE", dangerDesc:"Permanently deletes all your records, tasks and notes.",
+ factoryReset:"Reset All Data (Factory Reset)", saveSettings:"Save Settings",
+ cfmNewTitle:"Start New Streak",
+ cfmNewDesc:"Do you want to end your current streak for {habit} and begin a fresh start from zero?",
+ cfmResetTitle:"Reset Streak",
+ cfmResetDesc:"Did you slip up for a moment? Don't give up! Acknowledging the mistake is the most important step to recovery. Shall we reset the counter?",
+ alertName:"We need a name to recognise you. This field can't be left empty.",
+ alertHabit:"The goal you want to overcome can't be empty.",
+ alertDate:"You can't set a future or invalid date as your start date.",
+ ioOk:"✅ Your backup file was downloaded successfully!", ioErr:"⚠️ An error occurred while exporting.",
+ ioBad:"⚠️ Invalid or corrupted backup file!", ioBadDate:"⚠️ Date in backup is invalid! Import cancelled.",
+ ioConfirm:"⚠️ WARNING: All your current data will be replaced by this backup. Continue?",
+ ioLoaded:"✅ Backup restored! Welcome back, {name}.", ioRead:"⚠️ Could not read file. Please select a valid .json.",
+ resetConfirm:"⚠️ WARNING: Your streak, record, notes and tasks will be permanently deleted! Are you sure?",
+ months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+ days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+ habits:{smoke:"Smoking Addiction",vape:"Vaping / E-Cigarette",gamble:"Gambling & Betting",porn:"Fap & Porn Addiction",alcohol:"Alcohol Addiction",social:"Social Media & Screen",sugar:"Sugar & Junk Food",game:"Gaming Addiction"},
+ levels:[[0,"🌱 Beginner (Determined)"],[3,"🌿 Willpower Traveller"],[7,"🌳 Self-Control Holder"],[14,"⚔️ Chain Breaker"],[30,"🛡️ Free Champion"],[60,"💎 Diamond Mind"],[90,"👑 Purified Master"],[180,"🦅 Unbeatable Legend"],[365,"🌟 Emperor of Will"]],
+ quotes:[["The first and greatest victory is to conquer yourself.","Plato"],["Discipline is the only true bridge to freedom.","Jocko Willink"],["Chains of habit are too light to be felt until they are too heavy to be broken.","Warren Buffett"],["Do the hard thing today so tomorrow is easy.","Anonymous"],["Pain is temporary, but quitting lasts forever.","Lance Armstrong"],["The day your addiction ends is the day your freedom begins.","Anonymous"],["Even the darkest night will end and the sun will rise.","Victor Hugo"],["Falling isn't shameful — staying down is.","Proverb"],["Willpower is a muscle; it grows every time you resist.","David Goggins"]]
+}
+};
+
+let LANG = localStorage.getItem('metro_lang') || 'tr';
+const T = () => I18N[LANG];
+const fmt = (s, o) => s.replace(/\{(\w+)\}/g, (_, k) => o[k] ?? '');
+
+let appState = { userName:'', habitKey:'smoke', habitName:'', habitIcon:'🚭', habitCustom:false,
+  startDate:null, bestStreak:0, attempts:1, isActive:false, notes:[], todos:[] };
+
+/* ===== APPLY LANGUAGE ===== */
+function applyLanguage(){
+  const t = T();
+  document.documentElement.lang = t.htmlLang;
+  document.title = t.docTitle;
+  document.getElementById('langFlag').textContent = t.flag;
+  document.getElementById('langCode').textContent = t.code;
+
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.textContent = t[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const k = el.getAttribute('data-i18n-ph');
+    if(t[k]!==undefined) el.placeholder = t[k];
+  });
+
+  // Preset habit name follows language unless custom
+  if(!appState.habitCustom && appState.habitKey && t.habits[appState.habitKey]){
+    appState.habitName = t.habits[appState.habitKey];
+  }
+  localStorage.setItem('metro_lang', LANG);
+  if(!document.getElementById('startScreen').classList.contains('hidden')){
+    updateUIDisplay(); rotateRandomQuote(); updateClock();
+  }
+}
+
+document.getElementById('langToggle').addEventListener('click',()=>{
+  LANG = (LANG==='tr') ? 'en' : 'tr';
+  applyLanguage();
+  saveState();
+});
+
+/* ===== STORAGE ===== */
+const KEY='metro_antiaddict_v3';
+function loadState(){
+  const raw = localStorage.getItem(KEY);
+  if(!raw) return false;
+  try{
+    const p = JSON.parse(raw);
+    appState = {...appState, ...p};
+    if(appState.startDate) appState.startDate = new Date(appState.startDate);
+    appState.notes = appState.notes||[]; appState.todos = appState.todos||[];
+    return true;
+  }catch(e){ return false; }
+}
+function saveState(){
+  localStorage.setItem(KEY, JSON.stringify({...appState,
+    startDate: appState.startDate ? new Date(appState.startDate).toISOString() : null}));
+}
+
+/* ===== CALCULATIONS ===== */
+const elapsedDays = () => appState.startDate&&appState.isActive
+  ? Math.max(0,Math.floor((Date.now()-new Date(appState.startDate).getTime())/864e5)) : 0;
+const elapsedHours = () => appState.startDate&&appState.isActive
+  ? Math.max(0,Math.floor((Date.now()-new Date(appState.startDate).getTime())/36e5)) : 0;
+
+/* ===== CLOCK ===== */
+function updateClock(){
+  const t=T(), d=new Date();
+  const ct=document.getElementById('clockTime'); if(!ct) return;
+  ct.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  document.getElementById('clockDate').textContent =
+    LANG==='tr' ? `${d.getDate()} ${t.months[d.getMonth()]} ${d.getFullYear()}, ${t.days[d.getDay()]}`
+                : `${t.days[d.getDay()]}, ${t.months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+/* ===== UI UPDATE ===== */
+function updateUIDisplay(){
+  const t=T(), days=elapsedDays();
+  if(days>appState.bestStreak){ appState.bestStreak=days; saveState(); }
+
+  document.getElementById('displayUsername').textContent = appState.userName;
+  document.getElementById('displayHabitBadge').textContent = `${appState.habitIcon} ${appState.habitName}`;
+  document.getElementById('mainTileTargetLabel').textContent = `${appState.habitName.toUpperCase()} ${t.seriesSuffix}`;
+  document.getElementById('counterDays').textContent = days;
+  document.getElementById('counterHours').textContent = elapsedHours();
+  document.getElementById('counterWeeks').textContent = Math.floor(days/7);
+  document.getElementById('bestStreakVal').textContent = appState.bestStreak;
+  document.getElementById('attemptsVal').textContent = appState.attempts;
+
+  let lvl=t.levels[0];
+  t.levels.forEach(l=>{ if(days>=l[0]) lvl=l; });
+  document.getElementById('displayLevelName').textContent = lvl[1];
+
+  const pct = Math.min(100, Math.floor(days/90*100));
+  document.getElementById('progressPercent').textContent = pct+'%';
+  document.getElementById('remainingDaysTxt').textContent = days>=90 ? t.goalDone : fmt(t.daysLeft,{n:90-days});
+  document.getElementById('progressCircle').style.strokeDashoffset = 176 - 176*pct/100;
+
+  let unlocked=0;
+  document.querySelectorAll('.achiev-item').forEach(el=>{
+    if(days>=parseInt(el.dataset.days)){ el.classList.add('unlocked'); unlocked++; }
+    else el.classList.remove('unlocked');
+  });
+  document.getElementById('badgeCountText').textContent = `${unlocked}/4`;
+
+  updateTodosUI(); updateNotesUI();
+}
+
+function rotateRandomQuote(){
+  const q = T().quotes[Math.floor(Math.random()*T().quotes.length)];
+  document.getElementById('quoteText').textContent = `"${q[0]}"`;
+  document.getElementById('quoteAuthor').textContent = `— ${q[1]}`;
+}
+
+/* ===== BOOT ===== */
+window.addEventListener('DOMContentLoaded',()=>{
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('startDateInput').max = today;
+  document.getElementById('startDateInput').value = today;
+  document.getElementById('settingDate').max = today;
+
+  const had = loadState();
+  applyLanguage();
+  setupTilt(); setupHabitCards();
+  updateClock(); setInterval(updateClock,1000);
+
+  setTimeout(()=>{
+    const b=document.getElementById('bootScreen');
+    b.classList.add('fade-out');
+    setTimeout(()=>{
+      b.style.display='none';
+      document.getElementById('langToggle').classList.remove('hidden');
+      if(had && appState.isActive && appState.userName) showStartScreen();
+      else document.getElementById('oobeScreen').classList.remove('hidden');
+    },600);
+  },2500);
+});
+
+function showStartScreen(){
+  document.getElementById('oobeScreen').classList.add('hidden');
+  const s=document.getElementById('startScreen');
+  s.classList.remove('hidden'); s.classList.add('animate-in');
+  updateUIDisplay(); rotateRandomQuote(); updateClock();
+}
+
+/* ===== HABIT SELECTION ===== */
+let selKey='smoke', selIcon='🚭';
+function setupHabitCards(){
+  const cards=document.querySelectorAll('#addictionGrid .addict-card');
+  cards.forEach(c=>c.addEventListener('click',function(){
+    cards.forEach(x=>x.classList.remove('selected'));
+    this.classList.add('selected');
+    selKey=this.dataset.key; selIcon=this.dataset.icon;
+    const box=document.getElementById('customHabitContainer');
+    if(selKey==='custom'){ box.classList.remove('hidden'); document.getElementById('customHabitInput').focus(); }
+    else box.classList.add('hidden');
+  }));
+}
+
+document.getElementById('setupForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const t=T(), nameI=document.getElementById('userNameInput'), dateI=document.getElementById('startDateInput'),
+        custI=document.getElementById('customHabitInput');
+  let ok=true;
+  const name=nameI.value.trim(), date=new Date(dateI.value);
+  const end=new Date(); end.setHours(23,59,59,999);
+
+  if(name.length<2){ nameI.classList.add('error'); document.getElementById('nameError').style.display='block'; ok=false; }
+  else { nameI.classList.remove('error'); document.getElementById('nameError').style.display='none'; }
+
+  let hName, hIcon=selIcon, isCustom=false;
+  if(selKey==='custom'){
+    const v=custI.value.trim();
+    if(!v){ custI.classList.add('error'); document.getElementById('habitError').style.display='block'; ok=false; }
+    else { custI.classList.remove('error'); document.getElementById('habitError').style.display='none'; hName=v; hIcon='🎯'; isCustom=true; }
+  } else hName = t.habits[selKey];
+
+  if(isNaN(date)||date>end){ dateI.classList.add('error'); document.getElementById('dateError').style.display='block'; ok=false; }
+  else { dateI.classList.remove('error'); document.getElementById('dateError').style.display='none'; }
+
+  if(!ok) return;
+  Object.assign(appState,{userName:name,habitKey:selKey,habitName:hName,habitIcon:hIcon,habitCustom:isCustom,
+    startDate:date,isActive:true,attempts:1,bestStreak:0});
+  saveState(); showStartScreen();
+});
+
+/* ===== TILT ===== */
+function setupTilt(){
+  document.querySelectorAll('.tilt-effect').forEach(tile=>{
+    tile.addEventListener('pointerdown',function(e){
+      const r=this.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+      const cls = (x<r.width/2 ? (y<r.height/2?'tilt-top-left':'tilt-bottom-left')
+                               : (y<r.height/2?'tilt-top-right':'tilt-bottom-right'));
+      this.classList.add(cls);
+    });
+    const reset=function(){ this.classList.remove('tilt-top-left','tilt-top-right','tilt-bottom-left','tilt-bottom-right'); };
+    tile.addEventListener('pointerup',reset);
+    tile.addEventListener('pointerleave',reset);
+    tile.addEventListener('pointercancel',reset);
+  });
+}
+
+/* ===== MODALS ===== */
+const openModal = id => document.getElementById(id).classList.add('active');
+const closeModal = id => document.getElementById(id).classList.remove('active');
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.querySelectorAll('.metro-modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('active'); }));
+
+document.getElementById('btnOpenTodo').addEventListener('click',()=>openModal('todoModal'));
+document.getElementById('btnOpenNotes').addEventListener('click',()=>openModal('notesModal'));
+document.getElementById('btnOpenCalc').addEventListener('click',()=>openModal('calcModal'));
+document.getElementById('btnOpenAbout').addEventListener('click',()=>openModal('aboutModal'));
+document.getElementById('tileQuote').addEventListener('click',rotateRandomQuote);
+
+function openSettings(){
+  document.getElementById('settingUsername').value=appState.userName;
+  document.getElementById('settingHabitName').value=appState.habitName;
+  document.getElementById('settingHabitIcon').value=appState.habitIcon;
+  if(appState.startDate) document.getElementById('settingDate').value=new Date(appState.startDate).toISOString().split('T')[0];
+  openModal('settingsModal');
+}
+document.getElementById('actionSettings').addEventListener('click',openSettings);
+document.getElementById('btnHeaderProfile').addEventListener('click',openSettings);
+
+function confirmDialog(title,desc,onYes){
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmDesc').textContent=desc;
+  document.getElementById('btnConfirmYes').onclick=()=>{ onYes(); closeModal('confirmModal'); };
+  openModal('confirmModal');
+}
+function newStreak(){
+  const d=elapsedDays(); if(d>appState.bestStreak) appState.bestStreak=d;
+  appState.startDate=new Date(); appState.attempts++; saveState(); updateUIDisplay();
+}
+document.getElementById('actionNewStart').addEventListener('click',()=>
+  confirmDialog(T().cfmNewTitle, fmt(T().cfmNewDesc,{habit:appState.habitName}), newStreak));
+document.getElementById('actionReset').addEventListener('click',()=>
+  confirmDialog(T().cfmResetTitle, T().cfmResetDesc, newStreak));
+
+/* ===== TODO ===== */
+function updateTodosUI(){
+  const t=T(), list=document.getElementById('todoListUI'), empty=document.getElementById('todoEmptyState');
+  list.innerHTML=''; const todos=appState.todos;
+  const pending=todos.filter(x=>!x.completed).length;
+  document.getElementById('todoBadge').textContent=fmt(t.todoBadge,{n:pending});
+  const prev=document.getElementById('todoPreview');
+  if(!todos.length){ empty.style.display='block'; prev.textContent=t.todoEmptyPreview; return; }
+  empty.style.display='none';
+  const first=todos.find(x=>!x.completed);
+  prev.textContent = first ? `👉 ${first.text}` : t.todoAllDone;
+  todos.forEach((x,i)=>{
+    const li=document.createElement('li');
+    li.className='todo-item'+(x.completed?' completed':'');
+    li.innerHTML=`<div class="todo-left"><input type="checkbox" class="todo-checkbox" ${x.completed?'checked':''}><span class="todo-text">${esc(x.text)}</span></div><button class="todo-del">✕</button>`;
+    li.querySelector('.todo-left').onclick=()=>{ appState.todos[i].completed=!appState.todos[i].completed; saveState(); updateTodosUI(); };
+    li.querySelector('.todo-del').onclick=()=>{ appState.todos.splice(i,1); saveState(); updateTodosUI(); };
+    list.appendChild(li);
+  });
+}
+document.getElementById('btnAddTodo').addEventListener('click',()=>{
+  const i=document.getElementById('todoInput'), v=i.value.trim();
+  if(v){ appState.todos.push({text:v,completed:false}); i.value=''; saveState(); updateTodosUI(); }
+});
+document.getElementById('todoInput').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('btnAddTodo').click(); });
+
+/* ===== NOTES ===== */
+function updateNotesUI(){
+  const t=T(), box=document.getElementById('notesListUI'); box.innerHTML='';
+  document.getElementById('notesCountText').textContent=fmt(t.notesCount,{n:appState.notes.length});
+  if(!appState.notes.length){ box.innerHTML=`<div style="text-align:center;color:#666;padding:20px">${t.noNotes}</div>`; return; }
+  appState.notes.slice().reverse().forEach((n,idx)=>{
+    const real=appState.notes.length-1-idx;
+    const d=document.createElement('div'); d.className='note-card';
+    d.innerHTML=`<button class="note-del-btn">✕</button><div class="note-time">${esc(n.time)}</div><div class="note-content">${esc(n.text)}</div>`;
+    d.querySelector('.note-del-btn').onclick=()=>{ appState.notes.splice(real,1); saveState(); updateNotesUI(); };
+    box.appendChild(d);
+  });
+}
+document.getElementById('btnSaveNote').addEventListener('click',()=>{
+  const a=document.getElementById('noteTextarea'), v=a.value.trim(); if(!v) return;
+  const t=T(), d=new Date();
+  const stamp = LANG==='tr'
+    ? `${d.getDate()} ${t.months[d.getMonth()]} ${d.getFullYear()} - ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+    : `${t.months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} - ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  appState.notes.push({text:v,time:stamp}); a.value=''; saveState(); updateNotesUI();
+});
+
+/* ===== CALCULATOR ===== */
+let calcExpr='';
+const cM=()=>document.getElementById('calcMainDisplay'), cS=()=>document.getElementById('calcSubDisplay');
+function calcNum(n){ if(cM().textContent==='0'&&n!=='.') calcExpr=''; calcExpr+=n; cM().textContent=calcExpr; }
+function calcOp(o){ if(!calcExpr) calcExpr='0'; calcExpr+=' '+o+' '; cS().textContent=calcExpr; cM().textContent=''; }
+function calcAppend(s){ calcExpr+=s; cM().textContent=calcExpr; }
+function calcClear(){ calcExpr=''; cM().textContent='0'; cS().textContent=''; }
+function calcEqual(){
+  try{
+    const clean=calcExpr.replace(/[^-()\d/*+.]/g,'');
+    const r=new Function('return '+clean)();
+    cS().textContent=calcExpr+' ='; cM().textContent=r; calcExpr=String(r);
+  }catch(e){ cM().textContent='Error'; calcExpr=''; }
+}
+
+/* ===== SETTINGS ===== */
+document.getElementById('btnSaveSettings').addEventListener('click',()=>{
+  const t=T();
+  const n=document.getElementById('settingUsername').value.trim();
+  const h=document.getElementById('settingHabitName').value.trim();
+  const ic=document.getElementById('settingHabitIcon').value.trim();
+  const d=new Date(document.getElementById('settingDate').value);
+  const end=new Date(); end.setHours(23,59,59,999);
+  if(n.length<2) return alert(t.alertName);
+  if(!h) return alert(t.alertHabit);
+  if(isNaN(d)||d>end) return alert(t.alertDate);
+  if(h!==appState.habitName){ appState.habitCustom=true; appState.habitKey='custom'; }
+  Object.assign(appState,{userName:n,habitName:h,habitIcon:ic||'🎯',startDate:d});
+  saveState(); updateUIDisplay(); closeModal('settingsModal');
+});
+
+/* ===== EXPORT / IMPORT ===== */
+function ioMsg(m,c){ const e=document.getElementById('ioStatusMsg'); e.textContent=m; e.style.color=c;
+  clearTimeout(e._t); e._t=setTimeout(()=>e.textContent='',6000); }
+function exportAppData(){
+  const t=T();
+  try{
+    const payload={_app:'Metro UI Anti-Addiction',_version:'3.0',_exportedAt:new Date().toISOString(),
+      data:{...appState,startDate:appState.startDate?new Date(appState.startDate).toISOString():null}};
+    const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+    const d=new Date();
+    const stamp=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const a=document.createElement('a');
+    a.href=url; a.download=`willpower-backup_${(appState.userName||'user').replace(/[^\w-]/g,'_')}_${stamp}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    ioMsg(t.ioOk,'#10c95e');
+  }catch(e){ ioMsg(t.ioErr,'#ff4754'); }
+}
+document.getElementById('importFileInput').addEventListener('change',e=>{
+  const t=T(), f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const p=JSON.parse(ev.target.result), inc=p&&p.data?p.data:p;
+      if(!inc||!inc.userName||!inc.startDate){ ioMsg(t.ioBad,'#ff4754'); e.target.value=''; return; }
+      const d=new Date(inc.startDate), end=new Date(); end.setHours(23,59,59,999);
+      if(isNaN(d)||d>end){ ioMsg(t.ioBadDate,'#ff4754'); e.target.value=''; return; }
+      if(!confirm(t.ioConfirm)){ e.target.value=''; return; }
+      appState={userName:String(inc.userName).trim(),habitKey:inc.habitKey||'custom',
+        habitName:inc.habitName||'—',habitIcon:inc.habitIcon||'🎯',habitCustom:inc.habitCustom!==false,
+        startDate:d,bestStreak:+inc.bestStreak||0,attempts:+inc.attempts||1,isActive:true,
+        notes:Array.isArray(inc.notes)?inc.notes:[],todos:Array.isArray(inc.todos)?inc.todos:[]};
+      saveState(); updateUIDisplay(); openSettings();
+      ioMsg(fmt(t.ioLoaded,{name:appState.userName}),'#10c95e');
+      e.target.value='';
+    }catch(err){ ioMsg(t.ioRead,'#ff4754'); e.target.value=''; }
+  };
+  r.readAsText(f);
+});
+function resetAllApp(){ if(confirm(T().resetConfirm)){ localStorage.removeItem(KEY); location.reload(); } }
+
+const esc = s => { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; };
+setInterval(()=>{ if(!document.getElementById('startScreen').classList.contains('hidden')) updateUIDisplay(); },60000);
+</script>
+</body>
+</html>
