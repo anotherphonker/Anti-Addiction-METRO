@@ -52,19 +52,22 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
 .oobe-btn:hover{background:#26bfff}.oobe-btn:active{transform:scale(.97);background:#008cc2}
 .setup-legal-notice{font-size:11px;color:#666;text-align:center;max-width:580px;margin-top:25px;line-height:1.5;padding-bottom:10px}
 .support-notice{background:rgba(255,140,0,.12);border-left:4px solid #FF8C00;padding:12px 14px;margin-top:10px;font-size:12.5px;color:#ffcf9e;line-height:1.55;overflow-wrap:break-word}
+.color-btn{width:36px;height:36px;border-radius:6px;border:2px solid transparent;cursor:pointer;transition:transform .2s,border-color .2s;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.color-btn:hover{transform:scale(1.1);border-color:#fff}
+.color-btn.active{border-color:#00ADEF;box-shadow:0 0 0 3px rgba(0,173,239,.3)}
+.tile-preview{width:40px;height:40px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px}
 
 /* ===== START SCREEN (CROSS-PLATFORM RESILIENT GRID) ===== */
 .start-screen{background:linear-gradient(135deg,#0b1d30 0%,#173b5e 50%,#0c4a75 100%);min-height:100vh;min-height:100dvh;padding:25px 40px;position:relative;overflow-y:auto;overflow-x:hidden;width:100%}
 .start-screen.animate-in .tile{opacity:0;animation:metroTileSlideIn .45s cubic-bezier(.1,.9,.2,1) forwards}
 @keyframes metroTileSlideIn{0%{opacity:0;transform:perspective(500px) rotateY(-20deg) translateZ(-50px) translateX(60px)}100%{opacity:1;transform:perspective(500px) rotateY(0) translateZ(0) translateX(0)}}
 .start-screen.animate-in .tile:nth-child(1){animation-delay:.05s}.start-screen.animate-in .tile:nth-child(2){animation-delay:.1s}.start-screen.animate-in .tile:nth-child(3){animation-delay:.14s}.start-screen.animate-in .tile:nth-child(4){animation-delay:.18s}.start-screen.animate-in .tile:nth-child(5){animation-delay:.22s}.start-screen.animate-in .tile:nth-child(6){animation-delay:.26s}.start-screen.animate-in .tile:nth-child(7){animation-delay:.3s}.start-screen.animate-in .tile:nth-child(8){animation-delay:.34s}.start-screen.animate-in .tile:nth-child(9){animation-delay:.38s}.start-screen.animate-in .tile:nth-child(10){animation-delay:.42s}.start-screen.animate-in .tile:nth-child(11){animation-delay:.46s}
-.win-header{display:flex;justify-content:space-between;align-items:center;max-width:1320px;margin:0 auto 25px;padding-bottom:10px;padding-right:80px;width:100%;gap:16px}
-.win-user-area{display:flex;align-items:center;gap:16px;cursor:pointer;padding:6px 12px;transition:background .2s;min-width:0}
-.win-user-area:hover{background:rgba(255,255,255,.1)}
-.user-avatar{width:52px;height:52px;background:#00ADEF;border:2px solid rgba(255,255,255,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;box-shadow:0 4px 12px rgba(0,0,0,.35);flex-shrink:0}
-.user-name-title{font-size:24px;font-weight:200;display:flex;align-items:center;gap:10px;flex-wrap:wrap;word-break:break-word}
-.habit-badge-header{font-size:12px;font-weight:600;background:rgba(255,255,255,.15);padding:4px 10px;letter-spacing:.5px;text-transform:uppercase;border-radius:4px}
-.user-status-sub{font-size:13px;color:#a0d8ff;margin-top:2px}
+.win-header{display:flex;justify-content:space-between;align-items:center;max-width:1320px;margin:0 auto 25px;padding-bottom:10px;padding-right:80px;width:100%;gap:12px;min-width:0}
+.win-user-area{display:flex;align-items:center;gap:12px;padding:6px 0;min-width:0;flex:1;overflow:hidden}
+.user-avatar{width:48px;height:48px;background:#00ADEF;border:2px solid rgba(255,255,255,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(0,0,0,.35);flex-shrink:0}
+.user-name-title{font-size:20px;font-weight:200;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;overflow:hidden}
+.habit-badge-header{font-size:11px;font-weight:600;background:rgba(255,255,255,.15);padding:3px 8px;letter-spacing:.5px;text-transform:uppercase;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.user-status-sub{font-size:12px;color:#a0d8ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .header-clock{text-align:right;flex-shrink:0}
 .clock-time{font-size:36px;font-weight:200;line-height:1}
 .clock-date{font-size:13px;color:rgba(255,255,255,.8);margin-top:4px}
@@ -142,15 +145,16 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
 .todo-text{font-size:14px;overflow-wrap:break-word;word-break:break-word}
 .todo-del{background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:4px 8px;flex-shrink:0}
 .todo-del:hover{color:#e81123}
-.calc-display{background:#141414;border:2px solid #333;padding:14px;text-align:right;margin-bottom:12px;min-width:0}
-.calc-sub{font-size:13px;color:#777;min-height:18px;font-family:monospace;overflow-x:auto}
-.calc-main{font-size:32px;font-weight:200;overflow-x:auto;font-family:monospace}
-.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.calc-btn{background:#303030;color:#fff;border:none;padding:16px 0;font-size:18px;cursor:pointer;transition:background .15s,transform .1s}
-.calc-btn:hover{background:#3f3f3f}.calc-btn:active{transform:scale(.96)}
-.calc-op{background:#1c5082;font-weight:600}.calc-op:hover{background:#2465a3}
-.calc-eq{background:#10893E;font-weight:600}.calc-eq:hover{background:#15a34a}
-.calc-clear{background:#a82020}.calc-clear:hover{background:#c72626}
+.pledge-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:16px}
+.pledge-stat{background:#242424;border-top:3px solid #0099BC;padding:12px 8px;text-align:center;min-width:0}
+.ps-val{font-size:28px;font-weight:200;line-height:1}
+.ps-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-top:6px;overflow-wrap:break-word}
+.pledge-oath{background:linear-gradient(135deg,#0d3b4d,#0099BC);padding:18px;font-size:15px;font-weight:300;line-height:1.6;font-style:italic;border-left:4px solid #fff;margin-bottom:14px;overflow-wrap:break-word}
+.pledge-done{background:rgba(16,137,62,.18);border-left:4px solid #10893E;padding:12px 14px;font-size:13px;color:#8ff0b4;line-height:1.5;margin-bottom:12px}
+#btnMakePledge:disabled{background:#2c5c3d;color:#7fbf96;cursor:not-allowed}
+.pledge-cal{display:flex;gap:5px;flex-wrap:wrap;margin-top:14px}
+.pc-day{width:26px;height:26px;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666;border-radius:3px}
+.pc-day.on{background:#0099BC;color:#fff;font-weight:700}
 .note-input-area{width:100%;height:110px;background:#262626;border:2px solid #444;color:#fff;padding:12px;font-size:14px;resize:none;outline:none;margin-bottom:10px;box-sizing:border-box}
 .note-input-area:focus{border-color:#00ADEF}
 .note-list-container{display:flex;flex-direction:column;gap:10px;margin-top:15px;max-height:260px;overflow-y:auto}
@@ -162,6 +166,56 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
 .about-legal-box{background:#232323;border-left:4px solid #0078D7;padding:14px;margin-top:14px;font-size:12px;color:#ccc;line-height:1.6;overflow-wrap:break-word}
 .about-title-sub{font-size:14px;font-weight:600;color:#fff;margin-top:14px;margin-bottom:6px}
 .hidden{display:none!important}
+
+/* ===== BUGFIX: overflow-safe header / settings tile / mono color picker ===== */
+.win-user-area{max-width:100%;cursor:default}
+.win-user-area>div{min-width:0;max-width:100%;overflow:hidden}
+.user-name-title{width:100%;max-width:100%}
+.habit-badge-header{display:block;max-width:100%;min-width:0;line-height:1.25}
+.main-day-tile .t-label{max-width:100%;padding-right:118px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#actionSettings{overflow:hidden}
+#actionSettings>div{min-width:0;overflow:hidden}
+#actionSettings [data-i18n="settingsTile"]{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#actionSettings .t-sub{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35}
+.habit-settings-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:#252525;padding:8px 12px;border-radius:4px;min-width:0;overflow:hidden}
+.habit-settings-row .habit-edit-name{flex:1 1 120px;min-width:0;margin:0;font-size:14px;padding:8px}
+.habit-settings-row .habit-edit-icon{flex:0 0 58px;width:58px;text-align:center;margin:0;font-size:16px;padding:8px}
+.mono-color-btn{width:34px;height:34px;border:2px solid rgba(255,255,255,.25);border-radius:6px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.35);transition:transform .15s,border-color .15s,box-shadow .15s}
+.mono-color-btn:hover{transform:scale(1.08);border-color:#fff}
+.mono-color-btn.active{border-color:#fff;box-shadow:0 0 0 3px rgba(0,173,239,.45)}
+@media(max-width:767px){.main-day-tile .t-label{padding-right:96px}.habit-settings-row{flex-wrap:wrap}.habit-settings-row .habit-edit-name{flex-basis:calc(100% - 80px)}.habit-settings-row .m-btn{min-width:auto!important}}
+
+.about-dev-box a{color:#50E3C2;text-decoration:none;user-select:text;word-break:break-all}
+.about-dev-box a:hover{text-decoration:underline}
+.settings-add-row{display:flex;gap:8px;margin-top:10px;min-width:0}
+#settingsModal .modal-body{scrollbar-width:thin;scrollbar-color:#555 #1c1c1c}
+@media(max-width:767px){
+  #settingsModal{align-items:stretch;justify-content:stretch;padding:0;background:#1c1c1c}
+  #settingsModal .metro-modal-window{width:100vw;height:100vh;height:100dvh;max-width:none!important;max-height:none!important;border-left:0;border-right:0;border-bottom:0;padding:12px 12px calc(12px + env(safe-area-inset-bottom));transform:none;box-shadow:none}
+  #settingsModal.active .metro-modal-window{transform:none}
+  #settingsModal .modal-header{flex:0 0 auto;margin-bottom:10px;padding-bottom:8px}
+  #settingsModal .modal-title{font-size:19px;line-height:1.2}
+  #settingsModal .modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:0;padding-bottom:10px}
+  #settingsModal .modal-footer{flex:0 0 auto;margin-top:8px;padding-top:10px;gap:8px;background:#1c1c1c}
+  #settingsModal .modal-footer .m-btn{min-width:0!important;flex:1 1 calc(50% - 4px);padding:12px 8px;font-size:12px}
+  #settingsModal .form-group{margin-bottom:14px}
+  #settingsModal hr{margin:14px 0!important}
+  #settingsModal .oobe-label{font-size:10.5px;letter-spacing:1px;margin-bottom:6px}
+  #settingsModal .oobe-input{font-size:16px;padding:10px 12px}
+  #settingsModal .color-btn{width:34px;height:34px}
+  #settingsModal .tile-preview{width:34px;height:34px;font-size:13px}
+  #settingsModal .mono-color-btn{width:32px;height:32px}
+  .settings-add-row{display:grid!important;grid-template-columns:minmax(0,1fr) 64px;gap:8px;margin-top:8px}
+  .settings-add-row #newHabitName{min-width:0!important;width:100%!important}
+  .settings-add-row #newHabitIcon{width:64px!important;min-width:0!important}
+  .settings-add-row #btnAddHabit{grid-column:1/-1;min-width:0!important;width:100%;padding:11px 12px!important}
+  #settingsModal #avatarPreview{width:60px!important;height:60px!important;font-size:30px!important;flex:0 0 60px}
+  #settingsModal #avatarPreview + div{min-width:0}
+  #settingsModal [onclick="exportAppData()"],#settingsModal [onclick="document.getElementById('importFileInput').click()"]{min-width:0!important;flex:1 1 140px}
+  #settingsModal [onclick="resetAllApp()"]{min-width:0!important}
+}
+
+
 
 /* ===== CROSS-PLATFORM MOBILE & PORTRAIT SCREEN OPTIMIZATION (1080x2400 & All Viewports) ===== */
 @media(min-width:1024px){
@@ -254,6 +308,11 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
           <div class="addict-card" data-key="selfharm" data-icon="🩹"><div class="addict-ic">🩹</div><div class="addict-name" data-i18n="hbSelfHarm"></div></div>
           <div class="addict-card" data-key="custom" data-icon="✏️"><div class="addict-ic">✏️</div><div class="addict-name" data-i18n="hbCustom"></div></div>
         </div>
+        <div id="selectedHabitsPreview" style="margin-top:10px;padding:8px 12px;background:rgba(0,173,239,.1);border-left:3px solid #00ADEF;display:none">
+          <span style="font-size:11px;color:#00ADEF;font-weight:600;text-transform:uppercase" data-i18n="selectedGoals"></span>
+          <div id="selectedHabitsList" style="font-size:13px;margin-top:4px"></div>
+        </div>
+        <div id="habitSelectError" class="error-text" data-i18n="errHabitSelect" style="margin-top:8px"></div>
         <div id="customHabitContainer" class="hidden" style="margin-top:10px">
           <input type="text" id="customHabitInput" class="oobe-input" data-i18n-ph="customPh" autocomplete="off">
           <div id="habitError" class="error-text" data-i18n="errHabit"></div>
@@ -263,6 +322,8 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
       <div class="form-group">
         <label class="oobe-label"><span data-i18n="oobeStep3"></span> <span style="color:#ff4754">*</span></label>
         <input type="date" id="startDateInput" class="oobe-input" required>
+        <label class="oobe-label" style="margin-top:10px;color:#aaa;font-size:11px" data-i18n="startTimeLbl"></label>
+        <input type="time" id="startTimeInput" class="oobe-input" required>
         <div id="dateError" class="error-text" data-i18n="errDate"></div>
       </div>
       <button type="submit" class="oobe-btn" data-i18n="oobeStart"></button>
@@ -274,11 +335,11 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
 <!-- 3. METRO START SCREEN -->
 <div id="startScreen" class="start-screen hidden">
   <header class="win-header">
-    <div class="win-user-area" id="btnHeaderProfile">
-      <div class="user-avatar">👤</div>
-      <div>
+    <div class="win-user-area">
+      <div class="user-avatar" id="headerAvatar">👤</div>
+      <div style="min-width:0;overflow:hidden">
         <div class="user-name-title">
-          <span id="displayUsername">—</span>
+          <span id="displayUsername" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</span>
           <span class="habit-badge-header" id="displayHabitBadge">—</span>
         </div>
         <div class="user-status-sub" id="displayLevelName">—</div>
@@ -340,9 +401,13 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
             <span class="t-icon">📝</span>
             <div><div class="t-label" data-i18n="notesTile"></div><div class="t-sub" id="notesCountText">—</div></div>
           </div>
-          <div class="tile tile-2x2 bg-cyan tilt-effect" id="btnOpenCalc">
-            <span class="t-icon">🧮</span>
-            <div><div class="t-val" style="font-size:clamp(18px,5vw,26px);white-space:nowrap">+ − × ÷</div><div class="t-label" data-i18n="calcTile"></div></div>
+          <div class="tile tile-2x2 bg-cyan tilt-effect" id="btnOpenPledge">
+            <span class="t-icon" id="pledgeTileIcon">🤝</span>
+            <div>
+              <div class="t-val" id="pledgeStreakVal" style="font-size:clamp(22px,6vw,38px)">0</div>
+              <div class="t-label" data-i18n="pledgeTile"></div>
+              <div class="t-sub" id="pledgeStatusTxt">—</div>
+            </div>
           </div>
           <div class="tile tile-4x2 bg-indigo tilt-effect" id="tileQuote">
             <div class="quote-box">
@@ -446,34 +511,22 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
   </div>
 </div>
 
-<div id="calcModal" class="metro-modal-overlay">
-  <div class="metro-modal-window" style="max-width:380px">
-    <div class="modal-header"><span class="modal-title" data-i18n="calcModalTitle"></span><button class="modal-close" data-close="calcModal">✕</button></div>
+<div id="pledgeModal" class="metro-modal-overlay">
+  <div class="metro-modal-window" style="max-width:520px">
+    <div class="modal-header"><span class="modal-title" data-i18n="pledgeModalTitle"></span><button class="modal-close" data-close="pledgeModal">✕</button></div>
     <div class="modal-body">
-      <div class="calc-display"><div class="calc-sub" id="calcSubDisplay"></div><div class="calc-main" id="calcMainDisplay">0</div></div>
-      <div class="calc-grid">
-        <button class="calc-btn calc-clear" onclick="calcClear()">C</button>
-        <button class="calc-btn calc-op" onclick="calcAppend('(')">(</button>
-        <button class="calc-btn calc-op" onclick="calcAppend(')')">)</button>
-        <button class="calc-btn calc-op" onclick="calcOp('/')">÷</button>
-        <button class="calc-btn" onclick="calcNum('7')">7</button>
-        <button class="calc-btn" onclick="calcNum('8')">8</button>
-        <button class="calc-btn" onclick="calcNum('9')">9</button>
-        <button class="calc-btn calc-op" onclick="calcOp('*')">×</button>
-        <button class="calc-btn" onclick="calcNum('4')">4</button>
-        <button class="calc-btn" onclick="calcNum('5')">5</button>
-        <button class="calc-btn" onclick="calcNum('6')">6</button>
-        <button class="calc-btn calc-op" onclick="calcOp('-')">−</button>
-        <button class="calc-btn" onclick="calcNum('1')">1</button>
-        <button class="calc-btn" onclick="calcNum('2')">2</button>
-        <button class="calc-btn" onclick="calcNum('3')">3</button>
-        <button class="calc-btn calc-op" onclick="calcOp('+')">+</button>
-        <button class="calc-btn" onclick="calcNum('0')">0</button>
-        <button class="calc-btn" onclick="calcNum('00')">00</button>
-        <button class="calc-btn" onclick="calcNum('.')">.</button>
-        <button class="calc-btn calc-eq" onclick="calcEqual()">=</button>
+      <div class="pledge-stats">
+        <div class="pledge-stat"><div class="ps-val" id="pledgeStatStreak">0</div><div class="ps-lbl" data-i18n="pledgeStreakLbl"></div></div>
+        <div class="pledge-stat"><div class="ps-val" id="pledgeStatBest">0</div><div class="ps-lbl" data-i18n="pledgeBestLbl"></div></div>
+        <div class="pledge-stat"><div class="ps-val" id="pledgeStatTotal">0</div><div class="ps-lbl" data-i18n="pledgeTotalLbl"></div></div>
       </div>
+
+      <div class="pledge-oath" id="pledgeOathBox"></div>
+
+      <div id="pledgeDoneBox" class="pledge-done hidden" data-i18n="pledgeDoneMsg"></div>
+      <button class="m-btn m-btn-primary" style="width:100%;padding:16px" id="btnMakePledge" data-i18n="pledgeBtn"></button>
     </div>
+    <div class="modal-footer"><button class="m-btn m-btn-secondary" data-close="pledgeModal" data-i18n="close"></button></div>
   </div>
 </div>
 
@@ -483,6 +536,11 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
     <div class="modal-body">
       <h3 style="font-size:22px;font-weight:300;color:#00ADEF" data-i18n="appName"></h3>
       <p style="font-size:13px;color:#999;margin-top:4px" data-i18n="appVersion"></p>
+      <div class="about-title-sub" data-i18n="aboutDeveloperTitle"></div>
+      <div class="about-legal-box about-dev-box" style="margin-top:8px;border-left-color:#50E3C2">
+        <div><span data-i18n="aboutDeveloperNameLabel"></span> <strong>Resul Çelik</strong></div>
+        <div style="margin-top:4px"><span data-i18n="aboutGithubLabel"></span> <a href="https://github.com/anotherphonker" target="_blank" rel="noopener noreferrer">github.com/anotherphonker</a></div>
+      </div>
       <div class="about-title-sub" data-i18n="aboutPurposeTitle"></div>
       <p style="font-size:14px;color:#e0e0e0;line-height:1.5" data-i18n="aboutPurposeBody"></p>
       <div class="about-title-sub" style="color:#ff4754" data-i18n="aboutLegalTitle"></div>
@@ -503,17 +561,63 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
         <input type="text" id="settingUsername" class="oobe-input" autocomplete="off">
       </div>
       <div class="form-group">
-        <label class="oobe-label" data-i18n="setHabit"></label>
-        <input type="text" id="settingHabitName" class="oobe-input" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label class="oobe-label" data-i18n="setIcon"></label>
-        <input type="text" id="settingHabitIcon" class="oobe-input" style="max-width:100px;text-align:center;font-size:22px" maxlength="4">
+        <label class="oobe-label" style="color:#00ADEF" data-i18n="currentGoals"></label>
+        <div id="settingsHabitList" style="margin-bottom:10px"></div>
+        <div class="settings-add-row">
+          <input type="text" id="newHabitName" class="oobe-input" data-i18n-ph="newHabitNamePh" style="flex:1;margin:0;font-size:14px">
+          <input type="text" id="newHabitIcon" class="oobe-input" data-i18n-ph="newHabitIconPh" style="width:60px;text-align:center;margin:0;font-size:18px" maxlength="4">
+          <button class="m-btn" style="background:#10893E;color:#fff;flex:0;padding:10px 16px" id="btnAddHabit" data-i18n="addHabitBtn"></button>
+        </div>
       </div>
       <div class="form-group">
         <label class="oobe-label" data-i18n="setDate"></label>
         <input type="date" id="settingDate" class="oobe-input">
+        <label class="oobe-label" style="margin-top:10px;color:#aaa;font-size:11px" data-i18n="setTime"></label>
+        <input type="time" id="settingTime" class="oobe-input">
       </div>
+      
+      <hr style="border-color:#333;margin:20px 0">
+      
+      <label class="oobe-label" style="color:#FF8C00" data-i18n="themeColors"></label>
+      
+      <div class="form-group">
+        <label class="oobe-label" style="font-size:11px;color:#aaa" data-i18n="bgColorLbl"></label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="color-btn" style="background:linear-gradient(135deg,#0b1d30 0%,#173b5e 50%,#0c4a75 100%)" data-bg="ocean" title="Okyanus"></button>
+          <button class="color-btn" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)" data-bg="midnight" title="Gece"></button>
+          <button class="color-btn" style="background:linear-gradient(135deg,#2d1b4e 0%,#1a0b2e 100%)" data-bg="purple" title="Mor"></button>
+          <button class="color-btn" style="background:linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)" data-bg="forest" title="Orman"></button>
+          <button class="color-btn" style="background:linear-gradient(135deg,#3e1c00 0%,#8b3a00 50%,#cd6600 100%)" data-bg="sunset" title="Gün Batımı"></button>
+          <button class="color-btn" style="background:#1a1a1a" data-bg="dark" title="Sade Siyah"></button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="oobe-label" style="font-size:11px;color:#aaa" data-i18n="tileColorModeLbl"></label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="m-btn m-btn-secondary" id="btnTileRainbow" style="flex:1;min-width:100px" data-i18n="tileRainbow"></button>
+          <button class="m-btn m-btn-secondary" id="btnTileMono" style="flex:1;min-width:100px" data-i18n="tileMono"></button>
+          <button class="m-btn m-btn-secondary" id="btnTileRandom" style="flex:1;min-width:100px" data-i18n="tileRandom"></button>
+        </div>
+        <div id="tileColorPreview" style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"></div>
+        <div id="monoColorSettings" style="margin-top:12px">
+          <label class="oobe-label" style="font-size:11px;color:#aaa;margin-bottom:8px" data-i18n="monoColorLbl"></label>
+          <div id="monoColorPicker" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        </div>
+      </div>
+      
+      <hr style="border-color:#333;margin:20px 0">
+      
+      <label class="oobe-label" style="color:#00ADEF" data-i18n="profilePhoto"></label>
+      <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px">
+        <div id="avatarPreview" style="width:70px;height:70px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center;font-size:35px;overflow:hidden;border:3px solid #00ADEF">👤</div>
+        <div style="flex:1">
+          <input type="file" id="avatarInput" accept="image/*" style="display:none">
+          <button class="m-btn" style="background:#0078D7;color:#fff;width:100%;margin-bottom:8px" onclick="document.getElementById('avatarInput').click()" data-i18n="choosePhoto"></button>
+          <button class="m-btn m-btn-danger" style="width:100%" id="btnRemoveAvatar" data-i18n="removeAvatar">Kaldır</button>
+        </div>
+      </div>
+      
       <hr style="border-color:#333;margin:20px 0">
       <label class="oobe-label" style="color:#10c95e" data-i18n="backupTitle"></label>
       <p style="font-size:12px;color:#aaa;margin-bottom:12px;line-height:1.5" data-i18n="backupDesc"></p>
@@ -557,30 +661,45 @@ tr:{
  supportNotice:"💙 Bu konuda yalnız değilsin. Bu uygulama bir takip aracıdır, tıbbi tedavi veya terapi yerine geçmez. Lütfen bir uzmandan destek almayı düşün — Türkiye'de ücretsiz destek için 📞 ALO 191 (Uyuşturucu ile Mücadele) veya 📞 112 (Acil) hatlarını arayabilirsin.",
  customPh:"Örn: Kafein, aşırı harcama, gece geç yatmak...",
  errHabit:"Lütfen kurtulmak istediğiniz bağımlılığı veya alışkanlığı yazın.",
- oobeStep3:"3. SERİYE BAŞLADIĞINIZ GÜN",
- errDate:"Gelecekteki bir tarihi veya geçersiz bir tarihi seçemezsiniz.",
+ errHabitSelect:"En az 1 bağımlılık/hedef seçmelisiniz.",
+ oobeStep3:"3. SERİYE BAŞLADIĞINIZ GÜN VE SAAT",
+ errDate:"Gelecekteki/geçersiz bir tarih veya saat seçemezsiniz.",
  oobeStart:"Sistemi Başlat ➔",
  setupLegal:"* Yasal Uyarı: Metro arayüzü ve tasarım dili Microsoft Corporation'a aittir. Bu yazılımın Microsoft ile resmi bir bağı yoktur. Tüm verileriniz yalnızca cihazınızda saklanır.",
+ selectedGoals:"SEÇİLEN HEDEFLER:", startTimeLbl:"BAŞLAMA SAATİ",
  grpProgress:"İLERLEME TAKİBİ", grpApps:"UYGULAMACIKLAR & NOTLAR", grpActions:"İŞLEMLER & BİLGİLER",
  ongoing:"DEVAM EDİYOR", daysDone:"GÜN GEÇTİ", totalHours:"TOPLAM SAAT", weeks:"HAFTA",
  record:"REKOR (GÜN)", attempts:"TOPLAM DENEME",
- todoTitle:"YAPILACAKLAR LİSTESİ", notesTile:"GÜNLÜK & NOT", calcTile:"HESAP MAKİNESİ",
+ todoTitle:"YAPILACAKLAR LİSTESİ", notesTile:"GÜNLÜK & NOT",
+ pledgeTile:"GÜNLÜK SÖZ", pledgeDoneShort:"✅ Bugün söz verildi", pledgePendingShort:"Bugün söz bekliyor",
+ pledgeModalTitle:"🤝 Günlük Söz", pledgeStreakLbl:"Güncel Zincir", pledgeBestLbl:"En Uzun Zincir", pledgeTotalLbl:"Toplam Söz",
+ pledgeOath:"Ben, {name}, bugün {habit} hedefime sadık kalacağıma söz veriyorum. Gelen dürtüler geçicidir; ben ise kararlıyım. Bugünü kazanacağım.",
+ pledgeBtn:"✋ Bugün İçin Söz Veriyorum", pledgeBtnDone:"✅ Bugünün Sözü Verildi",
+ pledgeDoneMsg:"Bugünün sözünü verdin. Yarın tekrar gelip zinciri uzatmayı unutma!",
+ reminderTitle:"🔔 GÜNLÜK HATIRLATICI", 
+ reminderDesc:"Her gün belirlediğin saatte söz vermeyi hatırlatan bir bildirim gönderir. Bildirimler tarayıcın tarafından oluşturulur; hiçbir sunucuya veri gitmez. En iyi sonuç için uygulamayı ana ekranına ekle.",
+ reminderEnable:"Hatırlatıcıyı Aç", reminderActive:"✅ Hatırlatıcı aktif — her gün {time}",
+ reminderOff:"Hatırlatıcı kapatıldı.", reminderBlocked:"⚠️ Bildirim izni engellenmiş. Tarayıcı ayarlarından izin vermelisin.",
+ reminderUnsupported:"⚠️ Bu tarayıcı bildirimleri desteklemiyor.",
+ reminderTestBody:"Harika! Hatırlatıcın kuruldu. Her gün bu saatte seni dürteceğim. 💪",
+ reminderBody:"Bugünkü sözünü henüz vermedin. {habit} serin {days} günde — zinciri kırma! 🤝",
  goal90:"90 GÜNLÜK TAM ARINMA HEDEFİ",
  actNewStart:"YENİ SERİ BAŞLAT", actReset:"SERİYİ SIFIRLA",
  settingsTile:"Sistem Ayarları", settingsSub:"Hedef, isim, tarih · 💾 Yedek Al / Yükle",
  aboutTile:"HAKKINDA & YASAL UYARI", badgesEarned:"KAZANILAN ROZET", badgesTitle:"TAM ARINMA ROZETLERİ",
  b1d:"1 GÜN", b1w:"1 HAFTA", b1m:"1 AY", b90d:"90 GÜN",
- seriesSuffix:"SERİSİ", daysLeft:"{n} gün kaldı", goalDone:"✨ TAM ARINMA TAMAMLANDI!",
+ seriesSuffix:"SERİSİ", multiGoalsSeries:"{n} HEDEF SERİSİ", daysLeft:"{n} gün kaldı", goalDone:"✨ TAM ARINMA TAMAMLANDI!",
  todoBadge:"{n} görev bekliyor", todoEmptyPreview:"Zamanını ve zihnini dolu tutmak için hedefler ekle...",
  todoAllDone:"✨ Tüm hedefleri tamamladın, tebrikler!",
  notesCount:"{n} kayıtlı not", noNotes:"Hiç not kaydedilmemiş.",
  todoModalTitle:"✓ Yapılacaklar Listesi", todoPh:"Yeni bir görev veya hedef ekle...", addBtn:"+ EKLE",
  todoEmpty:"Henüz eklenmiş görev yok. Zihnine faydalı meşguliyetler bul!",
  notesModalTitle:"📝 Günlük & Düşünceler", notePh:"Bugün iraden nasıl? Hislerini ve stratejilerini buraya yaz...",
- saveBtn:"KAYDET", calcModalTitle:"🧮 Hesap Makinesi",
+ saveBtn:"KAYDET",
  close:"Kapat", cancel:"İptal", yesContinue:"Evet, Devam Et", understood:"Anladım, Kapat",
  aboutModalTitle:"ℹ️ Hakkında & Yasal Uyarı",
  appName:"Metro UI Anti-Bağımlılık Yazılımı", appVersion:"Sürüm: v3.0 — Windows 8 Metro Edition",
+ aboutDeveloperTitle:"👨‍💻 Geliştirici Bilgileri", aboutDeveloperNameLabel:"Geliştirici:", aboutGithubLabel:"GitHub:",
  aboutPurposeTitle:"🎯 Yazılımın Amacı",
  aboutPurposeBody:"Bu uygulama; sigara, kumar, ekran bağımlılığı, fap & porno veya diğer zararlı alışkanlıklardan kurtulmayı desteklemek için geliştirilmiş evrensel bir irade takip ve disiplin sistemidir.",
  aboutLegalTitle:"⚖️ Ticari Marka Beyanı",
@@ -588,8 +707,13 @@ tr:{
  aboutPrivacyTitle:"🔒 Gizlilik",
  aboutPrivacyBody:"Girdiğiniz hiçbir isim, not, görev veya tarih sunucuya gönderilmez. Tüm veriler tarayıcınızın yerel hafızasında çevrimdışı saklanır.",
  settingsModalTitle:"⚙️ Sistem Ayarları",
- setName:"SİZE NASIL HİTAP EDELİM?", setHabit:"HEDEF / BAĞIMLILIK ADI", setIcon:"HEDEF İKONU",
- setDate:"BAŞLANGIÇ TARİHİ (GELECEK TARİH SEÇİLEMEZ)",
+ setName:"SİZE NASIL HİTAP EDELİM?", setHabit:"HEDEF / BAĞIMLILIK ADI", setIcon:"HEDEF İKONU", removeAvatar:"Kaldır",
+ currentGoals:"MEVCUT HEDEFLER", newHabitNamePh:"Yeni hedef adı", newHabitIconPh:"🎯", addHabitBtn:"Ekle",
+ setDate:"BAŞLANGIÇ TARİHİ (GELECEK TARİH/SAAT SEÇİLEMEZ)", setTime:"BAŞLAMA SAATİ",
+ themeColors:"🎨 TEMA & RENKLER", bgColorLbl:"ARKAPLAN RENGİ", tileColorModeLbl:"LIVE TILE RENK MODU",
+ tileRainbow:"🌈 Renkli", tileMono:"🔵 Tek Renk", tileRandom:"🎲 Her Açılışta", monoColorLbl:"TEK RENK SEÇİMİ",
+ profilePhoto:"👤 PROFİL FOTOĞRAFI", choosePhoto:"📷 Fotoğraf Seç",
+ noGoals:"Henüz hedef eklenmemiş.", atLeastOneGoal:"En az bir hedef kalmalıdır.", enterGoalName:"Hedef adı girilmelidir.",
  backupTitle:"💾 VERİ YEDEKLEME & AKTARIM",
  backupDesc:"Tüm serinizi, rekorunuzu, notlarınızı ve görevlerinizi .json dosyası olarak dışa aktarabilir, başka bir cihazda içe aktararak devam edebilirsiniz.",
  exportBtn:"⬇️ Dışa Aktar", importBtn:"⬆️ İçe Aktar",
@@ -630,30 +754,45 @@ en:{
  supportNotice:"💙 You are not alone in this. This app is a tracking tool and is not a substitute for medical treatment or therapy. Please consider reaching out to a professional — you can find free, confidential helplines worldwide at 🌐 findahelpline.com, or call your local emergency number.",
  customPh:"e.g. Caffeine, overspending, staying up late...",
  errHabit:"Please type the addiction or habit you want to overcome.",
- oobeStep3:"3. THE DAY YOU STARTED YOUR STREAK",
- errDate:"You can't select a future or invalid date.",
+ errHabitSelect:"Please select at least 1 addiction/goal.",
+ oobeStep3:"3. THE DAY AND TIME YOU STARTED YOUR STREAK",
+ errDate:"You can't select a future or invalid date/time.",
  oobeStart:"Start System ➔",
  setupLegal:"* Legal Notice: The Metro interface and design language belong to Microsoft Corporation. This software has no official affiliation with Microsoft. All your data is stored only on your device.",
+ selectedGoals:"SELECTED GOALS:", startTimeLbl:"START TIME",
  grpProgress:"PROGRESS TRACKING", grpApps:"MINI APPS & NOTES", grpActions:"ACTIONS & INFO",
  ongoing:"ONGOING", daysDone:"DAYS CLEAN", totalHours:"TOTAL HOURS", weeks:"WEEKS",
  record:"RECORD (DAYS)", attempts:"TOTAL ATTEMPTS",
- todoTitle:"TO-DO LIST", notesTile:"JOURNAL & NOTES", calcTile:"CALCULATOR",
+ todoTitle:"TO-DO LIST", notesTile:"JOURNAL & NOTES",
+ pledgeTile:"DAILY PLEDGE", pledgeDoneShort:"✅ Pledged today", pledgePendingShort:"Pledge pending today",
+ pledgeModalTitle:"🤝 Daily Pledge", pledgeStreakLbl:"Current Chain", pledgeBestLbl:"Longest Chain", pledgeTotalLbl:"Total Pledges",
+ pledgeOath:"I, {name}, pledge to stay true to my {habit} goal today. Cravings are temporary; my resolve is not. I will win today.",
+ pledgeBtn:"✋ I Pledge For Today", pledgeBtnDone:"✅ Today's Pledge Made",
+ pledgeDoneMsg:"You've made today's pledge. Come back tomorrow to extend the chain!",
+ reminderTitle:"🔔 DAILY REMINDER",
+ reminderDesc:"Sends a notification at your chosen time each day to remind you to pledge. Notifications are generated by your browser — no data ever leaves your device. For best results, add the app to your home screen.",
+ reminderEnable:"Enable Reminder", reminderActive:"✅ Reminder active — every day at {time}",
+ reminderOff:"Reminder disabled.", reminderBlocked:"⚠️ Notification permission is blocked. Enable it in your browser settings.",
+ reminderUnsupported:"⚠️ This browser doesn't support notifications.",
+ reminderTestBody:"Great! Your reminder is set. I'll nudge you at this time every day. 💪",
+ reminderBody:"You haven't made today's pledge yet. Your {habit} streak is at {days} days — don't break the chain! 🤝",
  goal90:"90-DAY FULL RECOVERY GOAL",
  actNewStart:"START NEW STREAK", actReset:"RESET STREAK",
  settingsTile:"System Settings", settingsSub:"Goal, name, date · 💾 Backup / Restore",
  aboutTile:"ABOUT & LEGAL NOTICE", badgesEarned:"BADGES EARNED", badgesTitle:"RECOVERY BADGES",
  b1d:"1 DAY", b1w:"1 WEEK", b1m:"1 MONTH", b90d:"90 DAYS",
- seriesSuffix:"STREAK", daysLeft:"{n} days left", goalDone:"✨ FULL RECOVERY COMPLETE!",
+ seriesSuffix:"STREAK", multiGoalsSeries:"{n} GOAL STREAK", daysLeft:"{n} days left", goalDone:"✨ FULL RECOVERY COMPLETE!",
  todoBadge:"{n} tasks pending", todoEmptyPreview:"Add goals to keep your time and mind occupied...",
  todoAllDone:"✨ All tasks complete. Well done!",
  notesCount:"{n} saved notes", noNotes:"No notes saved yet.",
  todoModalTitle:"✓ To-Do List", todoPh:"Add a new task or goal...", addBtn:"+ ADD",
  todoEmpty:"No tasks added yet. Find healthy things to keep your mind busy!",
  notesModalTitle:"📝 Journal & Thoughts", notePh:"How is your willpower today? Write your feelings and strategies here...",
- saveBtn:"SAVE", calcModalTitle:"🧮 Calculator",
+ saveBtn:"SAVE",
  close:"Close", cancel:"Cancel", yesContinue:"Yes, Continue", understood:"Got It, Close",
  aboutModalTitle:"ℹ️ About & Legal Notice",
  appName:"Metro UI Anti-Addiction Software", appVersion:"Version: v3.0 — Windows 8 Metro Edition",
+ aboutDeveloperTitle:"👨‍💻 Developer Info", aboutDeveloperNameLabel:"Developer:", aboutGithubLabel:"GitHub:",
  aboutPurposeTitle:"🎯 Purpose of the Software",
  aboutPurposeBody:"This app is a universal willpower tracking and discipline system built to help people break free from smoking, gambling, screen addiction, fap & porn, or any other harmful habit.",
  aboutLegalTitle:"⚖️ Trademark Statement",
@@ -661,8 +800,13 @@ en:{
  aboutPrivacyTitle:"🔒 Privacy",
  aboutPrivacyBody:"No name, note, task or date you enter is ever sent to a server. Everything is stored offline in your browser's local storage.",
  settingsModalTitle:"⚙️ System Settings",
- setName:"WHAT SHOULD WE CALL YOU?", setHabit:"GOAL / ADDICTION NAME", setIcon:"GOAL ICON",
- setDate:"START DATE (FUTURE DATES NOT ALLOWED)",
+ setName:"WHAT SHOULD WE CALL YOU?", setHabit:"GOAL / ADDICTION NAME", setIcon:"GOAL ICON", removeAvatar:"Remove",
+ currentGoals:"CURRENT GOALS", newHabitNamePh:"New goal name", newHabitIconPh:"🎯", addHabitBtn:"Add",
+ setDate:"START DATE (FUTURE DATE/TIME NOT ALLOWED)", setTime:"START TIME",
+ themeColors:"🎨 THEME & COLORS", bgColorLbl:"BACKGROUND COLOR", tileColorModeLbl:"LIVE TILE COLOR MODE",
+ tileRainbow:"🌈 Colorful", tileMono:"🔵 Single Color", tileRandom:"🎲 On Each Launch", monoColorLbl:"SINGLE COLOR SELECTION",
+ profilePhoto:"👤 PROFILE PHOTO", choosePhoto:"📷 Choose Photo",
+ noGoals:"No goals added yet.", atLeastOneGoal:"At least one goal must remain.", enterGoalName:"Please enter a goal name.",
  backupTitle:"💾 DATA BACKUP & TRANSFER",
  backupDesc:"Export your streak, record, notes and tasks as a .json file, then import it on another device to continue right where you left off.",
  exportBtn:"⬇️ Export Data", importBtn:"⬆️ Import Data",
@@ -692,8 +836,116 @@ let LANG = localStorage.getItem('metro_lang') || 'tr';
 const T = () => I18N[LANG];
 const fmt = (s, o) => s.replace(/\{(\w+)\}/g, (_, k) => o[k] ?? '');
 
-let appState = { userName:'', habitKey:'smoke', habitName:'', habitIcon:'🚭', habitCustom:false,
-  startDate:null, bestStreak:0, attempts:1, isActive:false, notes:[], todos:[] };
+let appState = { userName:'', habits:[], habitKey:'smoke', habitName:'', habitIcon:'🚭', habitCustom:false,
+  startDate:null, bestStreak:0, attempts:1, isActive:false, notes:[], todos:[],
+  pledgeStreak:0, pledgeBest:0, pledgeTotal:0, lastPledgeDate:null,
+  bgColor:'ocean', tileColorMode:'rainbow', tileMonoColor:'#0078D7', avatarData:null };
+
+/* ===== THEME & COLORS ===== */
+const BG_THEMES = {
+  ocean: 'linear-gradient(135deg,#0b1d30 0%,#173b5e 50%,#0c4a75 100%)',
+  midnight: 'linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)',
+  purple: 'linear-gradient(135deg,#2d1b4e 0%,#1a0b2e 100%)',
+  forest: 'linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)',
+  sunset: 'linear-gradient(135deg,#3e1c00 0%,#8b3a00 50%,#cd6600 100%)',
+  dark: '#1a1a1a'
+};
+
+const TILE_COLORS = ['#10893E','#0078D7','#881798','#CA5010','#E81123','#008272','#0099BC','#9A0089','#FF8C00','#5558AF'];
+const MONO_COLORS = ['#0078D7','#00ADEF','#10893E','#008272','#881798','#9A0089','#CA5010','#E81123','#FF8C00','#5558AF','#1E1E1E','#607D8B'];
+const monoColor = () => appState.tileMonoColor || '#0078D7';
+
+function applyTheme(){
+  const bg = BG_THEMES[appState.bgColor] || BG_THEMES.ocean;
+  document.querySelector('.start-screen').style.background = bg;
+  
+  // Apply tile colors based on mode
+  const tiles = document.querySelectorAll('.tile');
+  if(appState.tileColorMode==='rainbow'){
+    tiles.forEach((t,i)=>{
+      if(!t.classList.contains('bg-dark')) t.style.background = TILE_COLORS[i % TILE_COLORS.length];
+    });
+  }else if(appState.tileColorMode==='mono'){
+    tiles.forEach(t=>{ if(!t.classList.contains('bg-dark')) t.style.background = monoColor(); });
+  }else if(appState.tileColorMode==='random'){
+    tiles.forEach(t=>{ if(!t.classList.contains('bg-dark')) t.style.background = TILE_COLORS[Math.floor(Math.random()*TILE_COLORS.length)]; });
+  }
+  
+  // Apply avatar
+  const headerAvatar = document.getElementById('headerAvatar');
+  if(appState.avatarData){
+    const imgHtml = `<img src="${appState.avatarData}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    if(headerAvatar) headerAvatar.innerHTML = imgHtml;
+    document.getElementById('avatarPreview').innerHTML = imgHtml;
+  }else{
+    if(headerAvatar) headerAvatar.textContent = '👤';
+    document.getElementById('avatarPreview').textContent = '👤';
+  }
+}
+
+document.querySelectorAll('.color-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    appState.bgColor = btn.dataset.bg;
+    applyTheme(); saveState();
+  });
+});
+
+document.getElementById('btnTileRainbow').addEventListener('click',()=>{ appState.tileColorMode='rainbow'; applyTheme(); saveState(); updateTilePreview(); });
+document.getElementById('btnTileMono').addEventListener('click',()=>{ appState.tileColorMode='mono'; applyTheme(); saveState(); updateTilePreview(); updateMonoColorPicker(); });
+document.getElementById('btnTileRandom').addEventListener('click',()=>{ appState.tileColorMode='random'; applyTheme(); saveState(); updateTilePreview(); });
+
+function updateTilePreview(){
+  const box = document.getElementById('tileColorPreview');
+  if(!box) return;
+  box.innerHTML = '';
+  const mode = appState.tileColorMode;
+  for(let i=0;i<4;i++){
+    let col;
+    if(mode==='rainbow') col = TILE_COLORS[i % TILE_COLORS.length];
+    else if(mode==='mono') col = monoColor();
+    else col = TILE_COLORS[Math.floor(Math.random()*TILE_COLORS.length)];
+    box.innerHTML += `<div class="tile-preview" style="background:${col}">${i+1}</div>`;
+  }
+  updateMonoColorPicker();
+}
+
+function updateMonoColorPicker(){
+  const picker = document.getElementById('monoColorPicker');
+  const wrap = document.getElementById('monoColorSettings');
+  if(!picker) return;
+  if(wrap) wrap.style.display = appState.tileColorMode === 'mono' ? 'block' : 'none';
+  picker.innerHTML = MONO_COLORS.map(col =>
+    `<button type="button" class="mono-color-btn${monoColor().toLowerCase()===col.toLowerCase()?' active':''}" data-mono-color="${col}" style="background:${col}" title="${col}"></button>`
+  ).join('');
+  picker.querySelectorAll('.mono-color-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      appState.tileColorMode = 'mono';
+      appState.tileMonoColor = btn.dataset.monoColor;
+      applyTheme();
+      saveState();
+      updateTilePreview();
+    });
+  });
+}
+
+// Avatar handling
+document.getElementById('avatarInput').addEventListener('change',function(){
+  const file = this.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    appState.avatarData = e.target.result;
+    applyTheme(); saveState();
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('btnRemoveAvatar').addEventListener('click',()=>{
+  appState.avatarData = null;
+  applyTheme(); saveState();
+});
 
 /* ===== APPLY LANGUAGE ===== */
 function applyLanguage(){
@@ -712,9 +964,14 @@ function applyLanguage(){
     if(t[k]!==undefined) el.placeholder = t[k];
   });
 
-  // Preset habit name follows language unless custom
-  if(!appState.habitCustom && appState.habitKey && t.habits[appState.habitKey]){
-    appState.habitName = t.habits[appState.habitKey];
+  // Keep user-edited habit names/icons intact. Only fill missing names from dictionary.
+  if(Array.isArray(appState.habits)){
+    appState.habits.forEach(h=>{ if(!h.name && h.key && t.habits[h.key]) h.name = t.habits[h.key]; });
+    if(appState.habits.length){
+      appState.habitKey = appState.habits[0].key;
+      appState.habitName = appState.habits[0].name;
+      appState.habitIcon = appState.habits[0].icon;
+    }
   }
   localStorage.setItem('metro_lang', LANG);
   if(!document.getElementById('startScreen').classList.contains('hidden')){
@@ -738,19 +995,70 @@ function loadState(){
     appState = {...appState, ...p};
     if(appState.startDate) appState.startDate = new Date(appState.startDate);
     appState.notes = appState.notes||[]; appState.todos = appState.todos||[];
+    appState.tileMonoColor = appState.tileMonoColor || '#0078D7';
+    migrateHabitState();
     return true;
   }catch(e){ return false; }
+}
+
+function migrateHabitState(){
+  const t = T();
+  if(!Array.isArray(appState.habits) || appState.habits.length === 0){
+    const key = appState.habitKey || 'custom';
+    const icon = appState.habitIcon || '🎯';
+    const name = appState.habitName || (t.habits && t.habits[key]) || 'Hedef';
+    appState.habits = [{key, icon, name}];
+  }
+  appState.habits = appState.habits
+    .filter(h => h && String(h.name || '').trim())
+    .map(h => ({
+      key: h.key || 'custom',
+      icon: String(h.icon || '🎯').trim() || '🎯',
+      name: String(h.name || '').trim()
+    }));
+  if(appState.habits.length === 0){
+    appState.habits = [{key:'custom',icon:'🎯',name:appState.habitName||'Hedef'}];
+  }
+  appState.habitKey = appState.habits[0].key;
+  appState.habitName = appState.habits[0].name;
+  appState.habitIcon = appState.habits[0].icon;
+  appState.habitCustom = appState.habitKey === 'custom';
 }
 function saveState(){
   localStorage.setItem(KEY, JSON.stringify({...appState,
     startDate: appState.startDate ? new Date(appState.startDate).toISOString() : null}));
 }
 
-/* ===== CALCULATIONS ===== */
+/* ===== CALCULATIONS =====
+   normalizeStart(): A <input type="date"> always returns midnight (00:00).
+   If the user picks TODAY, we anchor the streak to the current moment instead,
+   otherwise the counter would immediately show the hours already passed today.
+   For past dates we keep midnight of that day. */
+const localDateKey = (value=new Date()) => {
+  const d = new Date(value);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+};
+const localTimeKey = (value=new Date()) => {
+  const d = new Date(value);
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+};
+function normalizeStart(dateStr, timeStr){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr || '');
+  if(!m) return new Date(NaN);
+  const tm = /^(\d{2}):(\d{2})$/.exec(timeStr || '00:00');
+  const hh = tm ? Math.min(23, Math.max(0, parseInt(tm[1],10))) : 0;
+  const mm = tm ? Math.min(59, Math.max(0, parseInt(tm[2],10))) : 0;
+  return new Date(parseInt(m[1],10), parseInt(m[2],10)-1, parseInt(m[3],10), hh, mm, 0, 0);
+}
+function isFutureStart(dateStr, timeStr){
+  const d = normalizeStart(dateStr, timeStr);
+  return isNaN(d) || d.getTime() > Date.now();
+}
 const elapsedDays = () => appState.startDate&&appState.isActive
   ? Math.max(0,Math.floor((Date.now()-new Date(appState.startDate).getTime())/864e5)) : 0;
 const elapsedHours = () => appState.startDate&&appState.isActive
   ? Math.max(0,Math.floor((Date.now()-new Date(appState.startDate).getTime())/36e5)) : 0;
+const todayKey = () => localDateKey(new Date());
 
 /* ===== CLOCK ===== */
 function updateClock(){
@@ -768,8 +1076,16 @@ function updateUIDisplay(){
   if(days>appState.bestStreak){ appState.bestStreak=days; saveState(); }
 
   document.getElementById('displayUsername').textContent = appState.userName;
-  document.getElementById('displayHabitBadge').textContent = `${appState.habitIcon} ${appState.habitName}`;
-  document.getElementById('mainTileTargetLabel').textContent = `${appState.habitName.toUpperCase()} ${t.seriesSuffix}`;
+  
+  // Header badge: one goal shows icon + name; multiple goals show only emojis so the header never overflows.
+  const habits = Array.isArray(appState.habits) && appState.habits.length ? appState.habits : [{icon:appState.habitIcon,name:appState.habitName}];
+  let habitDisplay = habits.length > 1
+    ? habits.map(h=>h.icon || '🎯').join(' ')
+    : `${habits[0].icon || '🎯'} ${habits[0].name || appState.habitName}`;
+  document.getElementById('displayHabitBadge').textContent = habitDisplay;
+  document.getElementById('mainTileTargetLabel').textContent = habits.length > 1
+    ? fmt(t.multiGoalsSeries,{n:habits.length})
+    : `${(habits[0].name || appState.habitName).toUpperCase()} ${t.seriesSuffix}`;
   document.getElementById('counterDays').textContent = days;
   document.getElementById('counterHours').textContent = elapsedHours();
   document.getElementById('counterWeeks').textContent = Math.floor(days/7);
@@ -792,7 +1108,7 @@ function updateUIDisplay(){
   });
   document.getElementById('badgeCountText').textContent = `${unlocked}/4`;
 
-  updateTodosUI(); updateNotesUI();
+  updateTodosUI(); updateNotesUI(); updatePledgeUI();
 }
 
 function rotateRandomQuote(){
@@ -803,10 +1119,13 @@ function rotateRandomQuote(){
 
 /* ===== BOOT ===== */
 window.addEventListener('DOMContentLoaded',()=>{
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey(new Date());
+  const nowTime = localTimeKey(new Date());
   document.getElementById('startDateInput').max = today;
   document.getElementById('startDateInput').value = today;
+  document.getElementById('startTimeInput').value = nowTime;
   document.getElementById('settingDate').max = today;
+  document.getElementById('settingTime').value = nowTime;
 
   const had = loadState();
   applyLanguage();
@@ -829,49 +1148,97 @@ function showStartScreen(){
   document.getElementById('oobeScreen').classList.add('hidden');
   const s=document.getElementById('startScreen');
   s.classList.remove('hidden'); s.classList.add('animate-in');
-  updateUIDisplay(); rotateRandomQuote(); updateClock();
+  applyTheme(); updateUIDisplay(); rotateRandomQuote(); updateClock();
 }
 
 /* ===== HABIT SELECTION ===== */
-let selKey='smoke', selIcon='🚭';
+let selHabits=[{key:'smoke',icon:'🚭',name:''}];
 function setupHabitCards(){
   const cards=document.querySelectorAll('#addictionGrid .addict-card');
+  const previewBox=document.getElementById('selectedHabitsPreview');
+  const previewList=document.getElementById('selectedHabitsList');
   cards.forEach(c=>c.addEventListener('click',function(){
-    cards.forEach(x=>x.classList.remove('selected'));
-    this.classList.add('selected');
-    selKey=this.dataset.key; selIcon=this.dataset.icon;
-    const box=document.getElementById('customHabitContainer');
-    if(selKey==='custom'){ box.classList.remove('hidden'); document.getElementById('customHabitInput').focus(); }
-    else box.classList.add('hidden');
-    // Show a professional-support notice for sensitive categories
-    document.getElementById('supportNotice').classList.toggle('hidden', selKey!=='drug' && selKey!=='selfharm');
+    const key=this.dataset.key, icon=this.dataset.icon;
+    const customBox=document.getElementById('customHabitContainer');
+    
+    if(key==='custom'){
+      this.classList.toggle('selected');
+      if(this.classList.contains('selected')){
+        customBox.classList.remove('hidden');
+        document.getElementById('customHabitInput').focus();
+        if(!selHabits.find(h=>h.key==='custom')) selHabits.push({key:'custom',icon:'✏️',name:''});
+      }else{
+        customBox.classList.add('hidden');
+        selHabits=selHabits.filter(h=>h.key!=='custom');
+      }
+    }else{
+      this.classList.toggle('selected');
+      if(this.classList.contains('selected')){
+        if(!selHabits.find(h=>h.key===key)) selHabits.push({key,icon,name:''});
+      }else{
+        selHabits=selHabits.filter(h=>h.key!==key);
+      }
+    }
+    
+    // Show preview
+    const selectErr = document.getElementById('habitSelectError');
+    if(selectErr) selectErr.style.display = selHabits.length ? 'none' : 'block';
+    if(selHabits.length>0){
+      previewBox.style.display='block';
+      previewList.innerHTML=selHabits.map(h=>`<span style="display:inline-block;margin-right:8px">${h.icon} ${T().habits[h.key]||h.name||'...'}</span>`).join('');
+    }else{
+      previewBox.style.display='none';
+    }
+    
+    // Support notice for sensitive categories
+    const hasSensitive=selHabits.some(h=>h.key==='drug'||h.key==='selfharm');
+    document.getElementById('supportNotice').classList.toggle('hidden',!hasSensitive);
   }));
 }
 
 document.getElementById('setupForm').addEventListener('submit',e=>{
   e.preventDefault();
-  const t=T(), nameI=document.getElementById('userNameInput'), dateI=document.getElementById('startDateInput'),
+  const t=T(), nameI=document.getElementById('userNameInput'), dateI=document.getElementById('startDateInput'), timeI=document.getElementById('startTimeInput'),
         custI=document.getElementById('customHabitInput');
   let ok=true;
-  const name=nameI.value.trim(), date=new Date(dateI.value);
+  const name=nameI.value.trim(), startDateTime=normalizeStart(dateI.value, timeI.value);
   const end=new Date(); end.setHours(23,59,59,999);
 
   if(name.length<2){ nameI.classList.add('error'); document.getElementById('nameError').style.display='block'; ok=false; }
   else { nameI.classList.remove('error'); document.getElementById('nameError').style.display='none'; }
 
-  let hName, hIcon=selIcon, isCustom=false;
-  if(selKey==='custom'){
-    const v=custI.value.trim();
-    if(!v){ custI.classList.add('error'); document.getElementById('habitError').style.display='block'; ok=false; }
-    else { custI.classList.remove('error'); document.getElementById('habitError').style.display='none'; hName=v; hIcon='🎯'; isCustom=true; }
-  } else hName = t.habits[selKey];
+  // Process selected habits
+  let habitList = [];
+  selHabits.forEach(h=>{
+    if(h.key==='custom'){
+      const v=custI.value.trim();
+      if(v) habitList.push({key:'custom',icon:'✏️',name:v});
+    }else{
+      habitList.push({key:h.key,icon:h.icon,name:t.habits[h.key]});
+    }
+  });
+  
+  if(habitList.length===0){
+    const se=document.getElementById('habitSelectError');
+    if(se) se.style.display='block';
+    document.getElementById('habitError').style.display='none';
+    ok=false;
+  }
+  else {
+    const se=document.getElementById('habitSelectError');
+    if(se) se.style.display='none';
+    document.getElementById('habitError').style.display='none';
+  }
 
-  if(isNaN(date)||date>end){ dateI.classList.add('error'); document.getElementById('dateError').style.display='block'; ok=false; }
-  else { dateI.classList.remove('error'); document.getElementById('dateError').style.display='none'; }
+  if(isNaN(startDateTime)||startDateTime>new Date()){ dateI.classList.add('error'); timeI.classList.add('error'); document.getElementById('dateError').style.display='block'; ok=false; }
+  else { dateI.classList.remove('error'); if(timeI) timeI.classList.remove('error'); document.getElementById('dateError').style.display='none'; }
 
   if(!ok) return;
-  Object.assign(appState,{userName:name,habitKey:selKey,habitName:hName,habitIcon:hIcon,habitCustom:isCustom,
-    startDate:date,isActive:true,attempts:1,bestStreak:0});
+  
+  // Primary habit is first selected, but we store the list
+  const primary = habitList[0];
+  Object.assign(appState,{userName:name,habits:habitList,habitKey:primary.key,habitName:primary.name,habitIcon:primary.icon,habitCustom:primary.key==='custom',
+    startDate:startDateTime,isActive:true,attempts:1,bestStreak:0});
   saveState(); showStartScreen();
 });
 
@@ -899,19 +1266,49 @@ document.querySelectorAll('.metro-modal-overlay').forEach(o=>o.addEventListener(
 
 document.getElementById('btnOpenTodo').addEventListener('click',()=>openModal('todoModal'));
 document.getElementById('btnOpenNotes').addEventListener('click',()=>openModal('notesModal'));
-document.getElementById('btnOpenCalc').addEventListener('click',()=>openModal('calcModal'));
+document.getElementById('btnOpenPledge').addEventListener('click',()=>{
+  updatePledgeUI();
+  openModal('pledgeModal');
+});
 document.getElementById('btnOpenAbout').addEventListener('click',()=>openModal('aboutModal'));
 document.getElementById('tileQuote').addEventListener('click',rotateRandomQuote);
 
 function openSettings(){
+  migrateHabitState();
   document.getElementById('settingUsername').value=appState.userName;
-  document.getElementById('settingHabitName').value=appState.habitName;
-  document.getElementById('settingHabitIcon').value=appState.habitIcon;
-  if(appState.startDate) document.getElementById('settingDate').value=new Date(appState.startDate).toISOString().split('T')[0];
+  
+  // Show habits list
+  const habitListDiv = document.getElementById('settingsHabitList');
+  if(habitListDiv){
+    if(appState.habits && appState.habits.length > 0){
+      habitListDiv.innerHTML = appState.habits.map((h,i)=>`
+        <div class="habit-settings-row">
+          <span style="font-size:20px;flex:0 0 auto">${esc(h.icon)}</span>
+          <input type="text" class="oobe-input habit-edit-name" data-index="${i}" value="${esc(h.name)}" placeholder="${esc(T().newHabitNamePh)}">
+          <input type="text" class="oobe-input habit-edit-icon" data-index="${i}" value="${esc(h.icon)}" placeholder="🎯" maxlength="4">
+          <button class="m-btn m-btn-danger" style="padding:8px 12px;flex:0 0 auto;min-width:auto" onclick="removeHabit(${i})">✕</button>
+        </div>
+      `).join('');
+    }else{
+      habitListDiv.innerHTML = `<div style="color:#666;font-size:13px">${T().noGoals}</div>`;
+    }
+  }
+  
+  if(appState.startDate){
+    document.getElementById('settingDate').value=localDateKey(appState.startDate);
+    document.getElementById('settingTime').value=localTimeKey(appState.startDate);
+  }
+  
+  // Theme settings
+  document.querySelectorAll('.color-btn').forEach(b=>b.classList.toggle('active', b.dataset.bg===appState.bgColor));
+  updateTilePreview();
+  updateMonoColorPicker();
+  applyTheme();
+  
   openModal('settingsModal');
 }
 document.getElementById('actionSettings').addEventListener('click',openSettings);
-document.getElementById('btnHeaderProfile').addEventListener('click',openSettings);
+// Header profile click removed - only System Settings tile opens settings
 
 function confirmDialog(title,desc,onYes){
   document.getElementById('confirmTitle').textContent=title;
@@ -976,34 +1373,129 @@ document.getElementById('btnSaveNote').addEventListener('click',()=>{
   appState.notes.push({text:v,time:stamp}); a.value=''; saveState(); updateNotesUI();
 });
 
-/* ===== CALCULATOR ===== */
-let calcExpr='';
-const cM=()=>document.getElementById('calcMainDisplay'), cS=()=>document.getElementById('calcSubDisplay');
-function calcNum(n){ if(cM().textContent==='0'&&n!=='.') calcExpr=''; calcExpr+=n; cM().textContent=calcExpr; }
-function calcOp(o){ if(!calcExpr) calcExpr='0'; calcExpr+=' '+o+' '; cS().textContent=calcExpr; cM().textContent=''; }
-function calcAppend(s){ calcExpr+=s; cM().textContent=calcExpr; }
-function calcClear(){ calcExpr=''; cM().textContent='0'; cS().textContent=''; }
-function calcEqual(){
-  try{
-    const clean=calcExpr.replace(/[^-()\d/*+.]/g,'');
-    const r=new Function('return '+clean)();
-    cS().textContent=calcExpr+' ='; cM().textContent=r; calcExpr=String(r);
-  }catch(e){ cM().textContent='Error'; calcExpr=''; }
+/* ===== DAILY PLEDGE ===== */
+function updatePledgeUI(){
+  const t=T(), today=todayKey();
+  const done = appState.lastPledgeDate===today;
+
+  // Break the chain if a day was skipped
+  if(appState.lastPledgeDate){
+    const last = new Date(appState.lastPledgeDate);
+    const now = new Date(today);
+    const diffDays = Math.round((now - last) / 86400000);
+    if(diffDays > 1) appState.pledgeStreak = 0;
+  }
+
+  const tileVal = document.getElementById('pledgeStreakVal');
+  if(tileVal) tileVal.textContent = appState.pledgeStreak || 0;
+  const tileIcon = document.getElementById('pledgeTileIcon');
+  if(tileIcon) tileIcon.textContent = done ? '✅' : '🤝';
+  const tileStatus = document.getElementById('pledgeStatusTxt');
+  if(tileStatus) tileStatus.textContent = done ? t.pledgeDoneShort : t.pledgePendingShort;
+
+  const ss=document.getElementById('pledgeStatStreak');
+  if(!ss) return; // Modal not open
+  
+  ss.textContent = appState.pledgeStreak || 0;
+  document.getElementById('pledgeStatBest').textContent = appState.pledgeBest || 0;
+  document.getElementById('pledgeStatTotal').textContent = appState.pledgeTotal || 0;
+  
+  const primaryHabit = appState.habits && appState.habits.length > 0 ? appState.habits[0].name : appState.habitName;
+  document.getElementById('pledgeOathBox').textContent = fmt(t.pledgeOath, {name: appState.userName || 'Ben', habit: primaryHabit});
+
+  const btn = document.getElementById('btnMakePledge');
+  const doneBox = document.getElementById('pledgeDoneBox');
+  
+  if(done){
+    btn.disabled = true;
+    btn.textContent = t.pledgeBtnDone;
+    btn.style.opacity = '0.6';
+    if(doneBox) doneBox.classList.remove('hidden');
+  }else{
+    btn.disabled = false;
+    btn.textContent = t.pledgeBtn;
+    btn.style.opacity = '1';
+    if(doneBox) doneBox.classList.add('hidden');
+  }
 }
 
+document.getElementById('btnMakePledge').addEventListener('click',()=>{
+  const today=todayKey();
+  if(appState.lastPledgeDate===today) return;
+  const y=new Date(Date.now()-864e5);
+  const yKey=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;
+  appState.pledgeStreak = (appState.lastPledgeDate===yKey) ? (appState.pledgeStreak||0)+1 : 1;
+  appState.pledgeBest = Math.max(appState.pledgeBest||0, appState.pledgeStreak);
+  appState.pledgeTotal = (appState.pledgeTotal||0)+1;
+  appState.lastPledgeDate = today;
+  saveState(); updatePledgeUI();
+});
+
+/* ===== REMINDER DISABLED per request ===== */
+
 /* ===== SETTINGS ===== */
+// Habit management
+window.removeHabit = function(index){
+  if(!appState.habits || appState.habits.length <= 1){
+    alert(T().atLeastOneGoal);
+    return;
+  }
+  appState.habits.splice(index, 1);
+  // Update primary
+  appState.habitKey = appState.habits[0].key;
+  appState.habitName = appState.habits[0].name;
+  appState.habitIcon = appState.habits[0].icon;
+  saveState();
+  openSettings(); // Refresh
+  updateUIDisplay();
+};
+
+document.getElementById('btnAddHabit').addEventListener('click',()=>{
+  const name = document.getElementById('newHabitName').value.trim();
+  const icon = document.getElementById('newHabitIcon').value.trim() || '🎯';
+  if(!name) return alert(T().enterGoalName);
+  
+  if(!appState.habits) appState.habits = [];
+  appState.habits.push({key:'custom',icon,name});
+  // Update primary
+  appState.habitKey = 'custom';
+  appState.habitName = name;
+  appState.habitIcon = icon;
+  appState.habitCustom = true;
+  
+  document.getElementById('newHabitName').value = '';
+  document.getElementById('newHabitIcon').value = '';
+  
+  saveState();
+  openSettings(); // Refresh list
+  updateUIDisplay();
+});
+
 document.getElementById('btnSaveSettings').addEventListener('click',()=>{
   const t=T();
   const n=document.getElementById('settingUsername').value.trim();
-  const h=document.getElementById('settingHabitName').value.trim();
-  const ic=document.getElementById('settingHabitIcon').value.trim();
-  const d=new Date(document.getElementById('settingDate').value);
-  const end=new Date(); end.setHours(23,59,59,999);
+  const rawDate=document.getElementById('settingDate').value;
+  const rawTime=document.getElementById('settingTime').value || '00:00';
+  const d=normalizeStart(rawDate, rawTime);
+  
+  // Update edited habits
+  const editedHabits = (appState.habits || []).map(h => ({...h}));
+  document.querySelectorAll('.habit-edit-name').forEach(inp=>{
+    const idx = parseInt(inp.dataset.index);
+    if(editedHabits[idx]) editedHabits[idx].name = inp.value.trim();
+  });
+  document.querySelectorAll('.habit-edit-icon').forEach(inp=>{
+    const idx = parseInt(inp.dataset.index);
+    if(editedHabits[idx]) editedHabits[idx].icon = inp.value.trim() || '🎯';
+  });
+  
   if(n.length<2) return alert(t.alertName);
-  if(!h) return alert(t.alertHabit);
-  if(isNaN(d)||d>end) return alert(t.alertDate);
-  if(h!==appState.habitName){ appState.habitCustom=true; appState.habitKey='custom'; }
-  Object.assign(appState,{userName:n,habitName:h,habitIcon:ic||'🎯',startDate:d});
+  if(!editedHabits.length || editedHabits.some(h=>!h.name)) return alert(t.alertHabit);
+  if(isNaN(d)||d>new Date()) return alert(t.alertDate);
+  
+  appState.habits = editedHabits;
+  migrateHabitState();
+  Object.assign(appState,{userName:n,startDate:d});
   saveState(); updateUIDisplay(); closeModal('settingsModal');
 });
 
@@ -1035,11 +1527,14 @@ document.getElementById('importFileInput').addEventListener('change',e=>{
       const d=new Date(inc.startDate), end=new Date(); end.setHours(23,59,59,999);
       if(isNaN(d)||d>end){ ioMsg(t.ioBadDate,'#ff4754'); e.target.value=''; return; }
       if(!confirm(t.ioConfirm)){ e.target.value=''; return; }
-      appState={userName:String(inc.userName).trim(),habitKey:inc.habitKey||'custom',
-        habitName:inc.habitName||'—',habitIcon:inc.habitIcon||'🎯',habitCustom:inc.habitCustom!==false,
+      appState={userName:String(inc.userName).trim(),habits:Array.isArray(inc.habits)?inc.habits:[],
+        habitKey:inc.habitKey||'custom',habitName:inc.habitName||'—',habitIcon:inc.habitIcon||'🎯',habitCustom:inc.habitCustom!==false,
         startDate:d,bestStreak:+inc.bestStreak||0,attempts:+inc.attempts||1,isActive:true,
-        notes:Array.isArray(inc.notes)?inc.notes:[],todos:Array.isArray(inc.todos)?inc.todos:[]};
-      saveState(); updateUIDisplay(); openSettings();
+        notes:Array.isArray(inc.notes)?inc.notes:[],todos:Array.isArray(inc.todos)?inc.todos:[],
+        pledgeStreak:+inc.pledgeStreak||0,pledgeBest:+inc.pledgeBest||0,pledgeTotal:+inc.pledgeTotal||0,
+        lastPledgeDate:inc.lastPledgeDate||null,bgColor:inc.bgColor||'ocean',
+        tileColorMode:inc.tileColorMode||'rainbow',tileMonoColor:inc.tileMonoColor||'#0078D7',avatarData:inc.avatarData||null};
+      migrateHabitState(); saveState(); updateUIDisplay(); openSettings();
       ioMsg(fmt(t.ioLoaded,{name:appState.userName}),'#10c95e');
       e.target.value='';
     }catch(err){ ioMsg(t.ioRead,'#ff4754'); e.target.value=''; }
@@ -1051,5 +1546,5 @@ function resetAllApp(){ if(confirm(T().resetConfirm)){ localStorage.removeItem(K
 const esc = s => { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; };
 setInterval(()=>{ if(!document.getElementById('startScreen').classList.contains('hidden')) updateUIDisplay(); },60000);
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a206362f78270d26',t:'MTc4NDkzMDU3Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
