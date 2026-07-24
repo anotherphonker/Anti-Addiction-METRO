@@ -10,6 +10,20 @@
 ---
 
 <p align="center">
+  <a href="https://anotherphonker.github.io/Anti-Addiction-METRO/"><img src="https://img.shields.io/badge/▶_CANLI_DEMO_/_LIVE_DEMO-Tarayıcıda_Aç_·_Open_in_Browser-00ADEF?style=for-the-badge&logoColor=white" alt="Live Demo"></a>
+  <a href="https://github.com/anotherphonker/Anti-Addiction-METRO/releases"><img src="https://img.shields.io/badge/⬇_İNDİR_/_DOWNLOAD-Releases-10893E?style=for-the-badge&logo=github&logoColor=white" alt="Releases"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/anotherphonker/Anti-Addiction-METRO/stargazers"><img src="https://img.shields.io/github/stars/anotherphonker/Anti-Addiction-METRO?style=flat-square&color=FF8C00" alt="Stars"></a>
+  <a href="https://github.com/anotherphonker/Anti-Addiction-METRO/network/members"><img src="https://img.shields.io/github/forks/anotherphonker/Anti-Addiction-METRO?style=flat-square&color=881798" alt="Forks"></a>
+  <a href="https://github.com/anotherphonker/Anti-Addiction-METRO/issues"><img src="https://img.shields.io/github/issues/anotherphonker/Anti-Addiction-METRO?style=flat-square&color=E81123" alt="Issues"></a>
+  <img src="https://img.shields.io/github/repo-size/anotherphonker/Anti-Addiction-METRO?style=flat-square&color=0078D7" alt="Repo Size">
+</p>
+
+---
+
+<p align="center">
   <b>🌍 Dil Seçimi / Language Selection:</b><br>
   <a href="#--türkçe-dokümantasyon">🇹🇷 Türkçe Dokümantasyon</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="#--english-documentation">🇬🇧 English Documentation</a>
 </p>
@@ -41,24 +55,55 @@ Yapay zorlamalardan kaçınarak kullanıcının dikkatinin faydalı aktivitelere
 5. **💡 Günlük Motivasyon Alıntıları:** Üzerine her tıkladığınızda filozoflardan ve sporculardan (Platon, Victor Hugo, Warren Buffett vb.) özenle seçilmiş irade sözlerini yenileyen motivasyon blokları.
 
 ### 🚀 Nasıl Kullanılır?
-1. Bu deposu bilgisayarınıza veya telefonunuza indirin / klonlayın:
+
+#### 💻 Bilgisayarda (Windows / macOS / Linux)
+1. Bu depoyu bilgisayarınıza indirin / klonlayın:
    ```bash
    git clone https://github.com/anotherphonker/Anti-Addiction-METRO.git
    ```
-2. İndirdiğiniz klasördeki `index.html` dosyasını favori tarayıcınızla (Chrome, Safari, Firefox, Edge vb.) çift tıklayarak açın.
-3. Açılan kurulum ekranda (OOBE); hitap adınızı yazın, bırakmayı hedeflediğiniz alışkanlığı listeden (veya kendim yazacağım kısmından) seçin ve seriye başladığınız günü girin.
+   > 💡 Git kullanmıyorsanız: Sayfanın üstündeki yeşil **`Code`** butonuna → **`Download ZIP`** deyip klasörü çıkartmanız yeterli.
+2. Klasördeki `index.html` dosyasına çift tıklayın; varsayılan tarayıcınızda (Chrome, Edge, Firefox, Safari) anında açılır.
+3. Kurulum ekranında (OOBE) hitap adınızı yazın, bırakmak istediğiniz alışkanlığı seçin ve seriye başladığınız günü girin.
 4. Sistemin ve iradenizin tadını çıkarın!
 
-### 📱 Android Telefonlarda Açma
-Bazı Android dosya yöneticileri `.html` dosyalarını Firefox gibi tarayıcılarda doğrudan açamayabilir. Böyle bir sorun yaşarsanız şu yöntemi kullanabilirsiniz:
+---
 
-1. Google Play Store üzerinden **File Manager Plus** adlı dosya yöneticisini indirin.
-2. GitHub deposunu telefonunuza ZIP olarak indirin.
-3. İndirdiğiniz ZIP dosyasını klasöre çıkarın.
-4. **File Manager Plus** uygulamasında proje klasörünü açın.
-5. `index.html` dosyasına dokunun ve kullanmak istediğiniz tarayıcıyı seçin.
+#### 📱 Android Telefonda (ÖNEMLİ — Lütfen Okuyun)
 
-> Not: Uygulamanın ilerleme, görev ve not verileri seçtiğiniz tarayıcının `localStorage` alanında saklanır. Verilerinizi kaybetmemek veya başka bir tarayıcıya taşımak için Ayarlar bölümündeki **Dışa Aktar / İçe Aktar** özelliğini kullanın.
+> ⚠️ **Bilinen Sorun:** Android'in yerleşik "Dosyalar / Dosya Yöneticisi" uygulamaları ve Firefox, `.html` uzantılı yerel dosyaları **doğrudan açamaz**. Dosyaya dokunduğunuzda ya hiçbir şey olmaz ya da "Bu dosya açılamıyor" hatası alırsınız. Bu bir uygulama hatası değil, Android'in dosya izin (Scoped Storage) politikasından kaynaklanır.
+
+**✅ Çözüm — File Manager Plus ile açın:**
+
+1. **File Manager Plus** uygulamasını indirin *(ücretsizdir, geliştirici: Alpha Inventor)*:
+
+   <a href="https://play.google.com/store/apps/details?id=com.alphainventor.filemanager"><img src="https://img.shields.io/badge/Google_Play-File_Manager_Plus-414141?style=for-the-badge&logo=googleplay&logoColor=white" alt="Google Play"></a>
+
+   > 🔗 Doğrudan bağlantı: **https://play.google.com/store/apps/details?id=com.alphainventor.filemanager**
+2. Uygulama dosyasını telefonunuza indirin — **iki yol var:**
+
+   **🅰️ Releases'ten tek dosya (EN KOLAY — önerilir)**
+   > Sağdaki **[Releases](https://github.com/anotherphonker/Anti-Addiction-METRO/releases)** bölümüne girin → en son sürümün **`Assets`** kısmından doğrudan **`index.html`** dosyasına dokunup indirin. ZIP ayıklamaya gerek kalmaz!
+
+   **🅱️ Depoyu ZIP olarak**
+   > GitHub sayfasındaki yeşil **`Code`** butonu → **`Download ZIP`**
+
+3. **File Manager Plus**'ı açın → **`İndirilenler (Download)`** klasörüne girin.
+   - 🅰️ yolunu seçtiyseniz: doğrudan **`index.html`** dosyasını göreceksiniz, 4. adıma geçin.
+   - 🅱️ yolunu seçtiyseniz: `.zip` dosyasına dokunun → **`Ayıkla / Extract`** deyin → ayıklanan klasörün içine girin.
+4. **`index.html`** dosyasına dokunun.
+5. Karşınıza çıkan pencereden **`HTML Görüntüleyici`** yerine kullanmak istediğiniz tarayıcıyı (**Chrome** önerilir) seçin ve **`Her zaman`** deyin.
+6. Uygulama tam ekran açılacaktır. 🎉
+
+**🔖 Bonus — Ana ekrana kısayol ekleyin (uygulama gibi kullanın):**
+> Chrome'da açtıktan sonra sağ üstteki **⋮ (üç nokta)** menüsüne → **`Ana ekrana ekle`** deyin. Artık uygulama, telefonunuzun ana ekranında normal bir uygulama simgesi gibi durur ve tek dokunuşla açılır.
+
+**🌐 Alternatif — Hiç uğraşmadan kullanmak isterseniz:**
+> Uygulamayı hiçbir şey indirmeden doğrudan tarayıcınızda açın:
+>
+> ### 👉 **[anotherphonker.github.io/Anti-Addiction-METRO](https://anotherphonker.github.io/Anti-Addiction-METRO/)**
+>
+> *(Verileriniz yine yalnızca kendi cihazınızda saklanır — hiçbir sunucuya gitmez.)*
+> Kendi kopyanızı barındırmak isterseniz: projeyi fork'layın → **Settings → Pages** → kaynağı `main` olarak seçin.
 
 ---
 
@@ -95,24 +140,55 @@ Instead of rigid force, it nudges the user to divert their focus and time toward
 5. **💡 Daily Motivational Quotes Engine:** Tap on the indigo tile to trigger random inspirational quotes curated from stoics, thinkers, and athletes (Plato, Victor Hugo, Warren Buffett, Lance Armstrong, David Goggins, etc.).
 
 ### 🚀 Getting Started
-1. Clone or download this repository onto your desktop, laptop, or mobile device:
+
+#### 💻 On Desktop (Windows / macOS / Linux)
+1. Clone or download this repository:
    ```bash
    git clone https://github.com/anotherphonker/Anti-Addiction-METRO.git
    ```
-2. Locate the folder and open `index.html` inside your favorite web browser (Chrome, Edge, Safari, Firefox, Opera, etc.).
-3. Complete the brief initial OOBE setup: choose how you want to be greeted, select the addiction/habit you wish to conquer, and set the day your streak commenced.
+   > 💡 Not using Git? Just click the green **`Code`** button above → **`Download ZIP`** and extract the folder.
+2. Double-click `index.html` — it opens instantly in your default browser (Chrome, Edge, Firefox, Safari).
+3. Complete the brief OOBE setup: enter your preferred name, select the habit you wish to conquer, and set your streak start date.
 4. Stay disciplined and embrace freedom!
 
-### 📱 Opening the App on Android Phones
-Some Android file managers may not allow local `.html` files to open directly in browsers such as Firefox. If you encounter this issue, use the following method:
+---
 
-1. Download **File Manager Plus** from the Google Play Store.
-2. Download the GitHub repository to your phone as a ZIP file.
-3. Extract the downloaded ZIP file into a folder.
-4. Open the project folder with **File Manager Plus**.
-5. Tap `index.html` and select the browser you want to use.
+#### 📱 On Android (IMPORTANT — Please Read)
 
-> Note: Progress, task, and journal data is stored in the selected browser's `localStorage`. Use the **Export / Import** feature in Settings to avoid data loss or move your data to another browser.
+> ⚠️ **Known Issue:** Android's built-in "Files / File Manager" apps and Firefox **cannot open local `.html` files directly**. Tapping the file either does nothing or shows a "Can't open this file" error. This isn't a bug in the app — it's caused by Android's Scoped Storage permission policy.
+
+**✅ Solution — Open it with File Manager Plus:**
+
+1. Install the **File Manager Plus** app *(free, by Alpha Inventor)*:
+
+   <a href="https://play.google.com/store/apps/details?id=com.alphainventor.filemanager"><img src="https://img.shields.io/badge/Google_Play-File_Manager_Plus-414141?style=for-the-badge&logo=googleplay&logoColor=white" alt="Google Play"></a>
+
+   > 🔗 Direct link: **https://play.google.com/store/apps/details?id=com.alphainventor.filemanager**
+2. Download the app file to your phone — **two options:**
+
+   **🅰️ Single file from Releases (EASIEST — recommended)**
+   > Go to the **[Releases](https://github.com/anotherphonker/Anti-Addiction-METRO/releases)** section → under the latest version's **`Assets`**, tap **`index.html`** to download it directly. No ZIP extraction needed!
+
+   **🅱️ Full repository as ZIP**
+   > Green **`Code`** button on the GitHub page → **`Download ZIP`**
+
+3. Open **File Manager Plus** → navigate to your **`Download`** folder.
+   - If you chose 🅰️: you'll see **`index.html`** right away — skip to step 4.
+   - If you chose 🅱️: tap the `.zip` file → choose **`Extract`** → enter the extracted folder.
+4. Tap **`index.html`**.
+5. In the popup, choose your preferred browser (**Chrome** recommended) instead of "HTML Viewer", then select **`Always`**.
+6. The app launches full-screen. 🎉
+
+**🔖 Bonus — Add it to your home screen (use it like a native app):**
+> Once open in Chrome, tap the **⋮ (three-dot)** menu → **`Add to Home screen`**. The app will now sit on your home screen like a regular app icon and launch with a single tap.
+
+**🌐 Alternative — Skip the hassle entirely:**
+> Launch the app straight in your browser without downloading anything:
+>
+> ### 👉 **[anotherphonker.github.io/Anti-Addiction-METRO](https://anotherphonker.github.io/Anti-Addiction-METRO/)**
+>
+> *(Your data still stays exclusively on your own device — nothing is ever sent to a server.)*
+> Want to host your own copy? Fork the project → **Settings → Pages** → set the source to `main`.
 
 ---
 
