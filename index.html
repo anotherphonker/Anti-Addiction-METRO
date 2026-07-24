@@ -51,6 +51,7 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
 .oobe-btn{background:#00ADEF;color:#fff;border:none;padding:15px 45px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:1.5px;margin-top:5px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
 .oobe-btn:hover{background:#26bfff}.oobe-btn:active{transform:scale(.97);background:#008cc2}
 .setup-legal-notice{font-size:11px;color:#666;text-align:center;max-width:580px;margin-top:25px;line-height:1.5;padding-bottom:10px}
+.support-notice{background:rgba(255,140,0,.12);border-left:4px solid #FF8C00;padding:12px 14px;margin-top:10px;font-size:12.5px;color:#ffcf9e;line-height:1.55;overflow-wrap:break-word}
 
 /* ===== START SCREEN (CROSS-PLATFORM RESILIENT GRID) ===== */
 .start-screen{background:linear-gradient(135deg,#0b1d30 0%,#173b5e 50%,#0c4a75 100%);min-height:100vh;min-height:100dvh;padding:25px 40px;position:relative;overflow-y:auto;overflow-x:hidden;width:100%}
@@ -249,12 +250,15 @@ body{background:#000;min-height:100vh;min-height:100dvh;overflow-x:hidden;color:
           <div class="addict-card" data-key="social" data-icon="📱"><div class="addict-ic">📱</div><div class="addict-name" data-i18n="hbSocial"></div></div>
           <div class="addict-card" data-key="sugar" data-icon="🍭"><div class="addict-ic">🍭</div><div class="addict-name" data-i18n="hbSugar"></div></div>
           <div class="addict-card" data-key="game" data-icon="🎮"><div class="addict-ic">🎮</div><div class="addict-name" data-i18n="hbGame"></div></div>
+          <div class="addict-card" data-key="drug" data-icon="💊"><div class="addict-ic">💊</div><div class="addict-name" data-i18n="hbDrug"></div></div>
+          <div class="addict-card" data-key="selfharm" data-icon="🩹"><div class="addict-ic">🩹</div><div class="addict-name" data-i18n="hbSelfHarm"></div></div>
           <div class="addict-card" data-key="custom" data-icon="✏️"><div class="addict-ic">✏️</div><div class="addict-name" data-i18n="hbCustom"></div></div>
         </div>
         <div id="customHabitContainer" class="hidden" style="margin-top:10px">
           <input type="text" id="customHabitInput" class="oobe-input" data-i18n-ph="customPh" autocomplete="off">
           <div id="habitError" class="error-text" data-i18n="errHabit"></div>
         </div>
+        <div id="supportNotice" class="support-notice hidden" data-i18n="supportNotice"></div>
       </div>
       <div class="form-group">
         <label class="oobe-label"><span data-i18n="oobeStep3"></span> <span style="color:#ff4754">*</span></label>
@@ -548,7 +552,9 @@ tr:{
  oobeStep2:"2. KURTULMAK İSTEDİĞİNİZ BAĞIMLILIK HEDEFİ",
  hbSmoke:"Sigara", hbVape:"Elektronik Sigara", hbGamble:"Kumar & Bahis", hbPorn:"Fap & Porno",
  hbAlcohol:"Alkol", hbSocial:"Sosyal Medya & Ekran", hbSugar:"Şeker & Abur Cubur", hbGame:"Aşırı Oyun",
+ hbDrug:"Uyuşturucu & Madde", hbSelfHarm:"Kendine Zarar Verme",
  hbCustom:"Diğer / Kendim Yazacağım",
+ supportNotice:"💙 Bu konuda yalnız değilsin. Bu uygulama bir takip aracıdır, tıbbi tedavi veya terapi yerine geçmez. Lütfen bir uzmandan destek almayı düşün — Türkiye'de ücretsiz destek için 📞 ALO 191 (Uyuşturucu ile Mücadele) veya 📞 112 (Acil) hatlarını arayabilirsin.",
  customPh:"Örn: Kafein, aşırı harcama, gece geç yatmak...",
  errHabit:"Lütfen kurtulmak istediğiniz bağımlılığı veya alışkanlığı yazın.",
  oobeStep3:"3. SERİYE BAŞLADIĞINIZ GÜN",
@@ -603,7 +609,7 @@ tr:{
  resetConfirm:"⚠️ UYARI: Tüm seriniz, rekorunuz, notlarınız ve görevleriniz kalıcı olarak silinecek! Emin misiniz?",
  months:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
  days:['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
- habits:{smoke:"Sigara Bağımlılığı",vape:"Elektronik Sigara",gamble:"Kumar & Bahis",porn:"Fap & Porno Bağımlılığı",alcohol:"Alkol Bağımlılığı",social:"Sosyal Medya & Ekran",sugar:"Şeker & Abur Cubur",game:"Oyun Bağımlılığı"},
+ habits:{smoke:"Sigara Bağımlılığı",vape:"Elektronik Sigara",gamble:"Kumar & Bahis",porn:"Fap & Porno Bağımlılığı",alcohol:"Alkol Bağımlılığı",social:"Sosyal Medya & Ekran",sugar:"Şeker & Abur Cubur",game:"Oyun Bağımlılığı",drug:"Uyuşturucu & Madde Bağımlılığı",selfharm:"Kendine Zarar Verme"},
  levels:[[0,"🌱 Başlangıç (Kararlı)"],[3,"🌿 İrade Yolcusu"],[7,"🌳 Özdenetim Sahibi"],[14,"⚔️ Zincir Kırıcı"],[30,"🛡️ Özgür Şampiyon"],[60,"💎 Elmas Zihin"],[90,"👑 Tam Arınmış Usta"],[180,"🦅 Yenilmez Efsane"],[365,"🌟 İrade İmparatoru"]],
  quotes:[["Kendini yenmek, tüm zaferlerin en büyüğüdür.","Platon"],["Disiplin, özgürlüğe giden tek gerçek köprüdür.","Jocko Willink"],["Alışkanlık zincirleri, kırılamayacak kadar ağırlaşana dek hissedilmez.","Warren Buffett"],["Bugün zor olanı yap ki yarının kolay olsun.","Anonim"],["Acı geçicidir, ama vazgeçersen pişmanlık kalıcıdır.","Lance Armstrong"],["Bağımlılığın bittiği gün, özgürlüğün başladığı gündür.","Anonim"],["En karanlık gece bile şafakla sona erer.","Victor Hugo"],["Düşmek ayıp değil, düştüğün yerde kalmak ayıp.","Türk Atasözü"],["İrade kas gibidir; direndikçe güçlenir.","David Goggins"]]
 },
@@ -619,7 +625,9 @@ en:{
  oobeStep2:"2. THE ADDICTION YOU WANT TO BREAK",
  hbSmoke:"Smoking", hbVape:"Vaping / E-Cig", hbGamble:"Gambling & Betting", hbPorn:"Fap & Porn",
  hbAlcohol:"Alcohol", hbSocial:"Social Media & Screen", hbSugar:"Sugar & Junk Food", hbGame:"Excessive Gaming",
+ hbDrug:"Drugs & Substances", hbSelfHarm:"Self-Harm",
  hbCustom:"Other / I'll Type My Own",
+ supportNotice:"💙 You are not alone in this. This app is a tracking tool and is not a substitute for medical treatment or therapy. Please consider reaching out to a professional — you can find free, confidential helplines worldwide at 🌐 findahelpline.com, or call your local emergency number.",
  customPh:"e.g. Caffeine, overspending, staying up late...",
  errHabit:"Please type the addiction or habit you want to overcome.",
  oobeStep3:"3. THE DAY YOU STARTED YOUR STREAK",
@@ -674,7 +682,7 @@ en:{
  resetConfirm:"⚠️ WARNING: Your streak, record, notes and tasks will be permanently deleted! Are you sure?",
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
- habits:{smoke:"Smoking Addiction",vape:"Vaping / E-Cigarette",gamble:"Gambling & Betting",porn:"Fap & Porn Addiction",alcohol:"Alcohol Addiction",social:"Social Media & Screen",sugar:"Sugar & Junk Food",game:"Gaming Addiction"},
+ habits:{smoke:"Smoking Addiction",vape:"Vaping / E-Cigarette",gamble:"Gambling & Betting",porn:"Fap & Porn Addiction",alcohol:"Alcohol Addiction",social:"Social Media & Screen",sugar:"Sugar & Junk Food",game:"Gaming Addiction",drug:"Drug & Substance Addiction",selfharm:"Self-Harm"},
  levels:[[0,"🌱 Beginner (Determined)"],[3,"🌿 Willpower Traveller"],[7,"🌳 Self-Control Holder"],[14,"⚔️ Chain Breaker"],[30,"🛡️ Free Champion"],[60,"💎 Diamond Mind"],[90,"👑 Purified Master"],[180,"🦅 Unbeatable Legend"],[365,"🌟 Emperor of Will"]],
  quotes:[["The first and greatest victory is to conquer yourself.","Plato"],["Discipline is the only true bridge to freedom.","Jocko Willink"],["Chains of habit are too light to be felt until they are too heavy to be broken.","Warren Buffett"],["Do the hard thing today so tomorrow is easy.","Anonymous"],["Pain is temporary, but quitting lasts forever.","Lance Armstrong"],["The day your addiction ends is the day your freedom begins.","Anonymous"],["Even the darkest night will end and the sun will rise.","Victor Hugo"],["Falling isn't shameful — staying down is.","Proverb"],["Willpower is a muscle; it grows every time you resist.","David Goggins"]]
 }
@@ -835,6 +843,8 @@ function setupHabitCards(){
     const box=document.getElementById('customHabitContainer');
     if(selKey==='custom'){ box.classList.remove('hidden'); document.getElementById('customHabitInput').focus(); }
     else box.classList.add('hidden');
+    // Show a professional-support notice for sensitive categories
+    document.getElementById('supportNotice').classList.toggle('hidden', selKey!=='drug' && selKey!=='selfharm');
   }));
 }
 
