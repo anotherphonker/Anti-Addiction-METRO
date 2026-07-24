@@ -10,7 +10,7 @@
 ---
 
 <p align="center">
-  <a href="https://anotherphonker.github.io/Anti-Addiction-METRO/index.html"><img src="https://img.shields.io/badge/▶_CANLI_DEMO_/_LIVE_DEMO-Tarayıcıda_Aç_·_Open_in_Browser-00ADEF?style=for-the-badge&logoColor=white" alt="Live Demo"></a>
+  <a href="https://anotherphonker.github.io/Anti-Addiction-METRO/"><img src="https://img.shields.io/badge/▶_-Tarayıcıda_Aç_·_Open_in_Browser-00ADEF?style=for-the-badge&logoColor=white" alt="Live Demo"></a>
   <a href="https://github.com/anotherphonker/Anti-Addiction-METRO/releases"><img src="https://img.shields.io/badge/⬇_İNDİR_/_DOWNLOAD-Releases-10893E?style=for-the-badge&logo=github&logoColor=white" alt="Releases"></a>
 </p>
 
