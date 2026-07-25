@@ -56,8 +56,7 @@ Yapay zorlamalardan kaçınarak kullanıcının dikkatinin faydalı aktivitelere
 1. **📊 İlerleme ve Rozet Paneli:** Günler, toplam saatler, haftalar, deneme sayıları ve kişisel rekorunuz. 90 günlük arınma hedefine göre adım adım kilit açan 4 ana kazancın (1 Gün, 1 Hafta, 1 Ay, 90 Gün) animasyonlu paneli ve 9 aşamalı rütbe/seviye takibi!
 2. **✔️ Canlı Önizlemeli Yapılacaklar Listesi (To-Do Live Tile):** Boş vakitlerinizi dolduracak görevler veya hedefler ekleyebilirsiniz. Tamamladıklarınızın üzerini çizip silebilirsiniz. Bekleyen ilk görev ve sayaç doğrudan ana karoda (Live Tile) gösterilir.
 3. **📝 İrade Günlüğü & Notlar:** İradenizin zorlandığı zamanlarda hislerinizi ve kendinizi sakinleştirme stratejilerinizi kaydedebileceğiniz gün ve saat damgalı dahili not uygulamacığı.
-4. **🧮 Metro Hesap Makinesi:** Temiz, hızlı ve şık bir arayüze sahip işlevsel pencere tabanlı matematiksel hesap makinesi.
-5. **💡 Günlük Motivasyon Alıntıları:** Üzerine her tıkladığınızda filozoflardan ve sporculardan (Platon, Victor Hugo, Warren Buffett vb.) özenle seçilmiş irade sözlerini yenileyen motivasyon blokları.
+4. **💡 Günlük Motivasyon Alıntıları:** Üzerine her tıkladığınızda filozoflardan ve sporculardan (Platon, Victor Hugo, Warren Buffett vb.) özenle seçilmiş irade sözlerini yenileyen motivasyon blokları.
 
 ### 🚀 Nasıl Kullanılır?
 
@@ -110,7 +109,7 @@ Siteye hiç girmeden, dosyayı kendi cihazınızda tutmak isterseniz:
 2. GitHub sayfasındaki yeşil **`Code`** butonu → **`Download ZIP`** ile depoyu telefonunuza indirin.
 3. **File Manager Plus**'ı açın → **`İndirilenler (Download)`** klasörüne girin → `.zip` dosyasına dokunun → **`Ayıkla / Extract`** deyin.
 4. Ayıklanan klasöre girip **`index.html`** dosyasına dokunun.
-5. Açılan pencerede **`HTML Görüntüleyici`** yerine **Chrome**'u seçin ve **`Her zaman`** deyin.
+5. Açılan pencerede **`HTML Görüntüleyici`** yerine **Firefox**'u seçin ve **`Her zaman`** deyin.
 6. Uygulama tam ekran açılır. 🎉
 
 ---
@@ -144,8 +143,7 @@ Instead of rigid force, it nudges the user to divert their focus and time toward
 1. **📊 Progress Analytics & Badge Board:** Live metrics tracking continuous days clean, total hours elapsed, weeks, attempts count, and your personal best streak. Accompanied by a 90-day progress circle, 4 milestone achievement badges (1 Day, 1 Week, 1 Month, 90 Days), and a 9-stage leveling hierarchy!
 2. **✔️ To-Do List with Live Tile Preview:** Keep your mind and calendar occupied by creating actionable tasks or productive goals. Your total pending tasks count and your highest-priority objective are directly streamed onto the front Metro dashboard!
 3. **📝 Willpower Journal & Notes:** A time-stamped notebook applet where you can log personal coping mechanisms, emotional checkpoints, and strategies when facing urges.
-4. **🧮 Metro UI Calculator:** A clean, accurate, and rapid window-based mathematical calculator styled natively in the Windows Metro design language.
-5. **💡 Daily Motivational Quotes Engine:** Tap on the indigo tile to trigger random inspirational quotes curated from stoics, thinkers, and athletes (Plato, Victor Hugo, Warren Buffett, Lance Armstrong, David Goggins, etc.).
+4. **💡 Daily Motivational Quotes Engine:** Tap on the indigo tile to trigger random inspirational quotes curated from stoics, thinkers, and athletes (Plato, Victor Hugo, Warren Buffett, Lance Armstrong, David Goggins, etc.).
 
 ### 🚀 Getting Started
 
@@ -198,7 +196,7 @@ If you'd rather keep the file on your own device without visiting the site:
 2. Download the repo to your phone via the green **`Code`** button → **`Download ZIP`**.
 3. Open **File Manager Plus** → go to your **`Download`** folder → tap the `.zip` → choose **`Extract`**.
 4. Enter the extracted folder and tap **`index.html`**.
-5. In the popup, choose **Chrome** instead of "HTML Viewer", then select **`Always`**.
+5. In the popup, choose **Firefox** instead of "HTML Viewer", then select **`Always`**.
 6. The app launches full-screen. 🎉
 
 ---
